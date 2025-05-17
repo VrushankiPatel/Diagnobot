@@ -195,12 +195,13 @@ GCP Hosting + Whisper API
 
 ## 👥 Team DiagnoBot
 
-| Name     | Role                          | Skills                                |
-| -------- | ----------------------------- | ------------------------------------- |
-| Ewa      | ML + Data + Backend           | Python, Langchain, RAG, MongoDB       |
-| Person 1 | Frontend & UI/UX Lead         | React.js, TailwindCSS, Design Systems |
-| Person 2 | Data Engineer + Viz           | Python, Pandas, Chart.js, Plotly      |
-| Person 3 | XR/VR Enthusiast + AI Trainee | XR Tools, Prompting, Frontend         |
+| Name          | Role               | Skills                                | Responsibilities                                                                                                                            |
+| ------------- | ------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Joanna**    | ML + Data Engineer | Python, LangChain, RAG, MongoDB       | - Develop AI triage logic<br>- Build and fine-tune RAG pipeline<br>- Configure vector DB with medical datasets<br>- Whisper API integration |
+| **Ewa**       | Frontend Engineer  | React.js, TailwindCSS, Design Systems | - Build user-friendly dashboards<br>- Implement chat/video UI<br>- Connect frontend to APIs<br>- Design responsive UX                       |
+| **Vrushanki** | Backend Engineer 1 | Python, RAG, MongoDB                  | - Develop RESTful APIs with FastAPI<br>- Handle file uploads, chat backend<br>- Implement authentication and routing                        |
+| **Akanksh**   | Backend Engineer 2 | RAG, MongoDB                          | - Set up Google Cloud infra<br>- Configure database and deployment<br>- Build admin logic and support scheduling/payment                    |
+
 
 > **Built for the AI in Action Hackathon 2025**
 
