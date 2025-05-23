@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const SignIn = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Placeholder: Add registration logic here
-    navigate('/login');
+    // Placeholder: Add authentication logic here
+    navigate('/');
   };
 
   return (
@@ -19,7 +18,7 @@ const SignIn = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl shadow-lg min-w-[320px] flex flex-col gap-5"
       >
-        <h2 className="m-0 font-bold text-2xl text-[#222]">Sign Up</h2>
+        <h2 className="m-0 font-bold text-2xl text-[#222]">Login</h2>
         <input
           type="email"
           placeholder="Email address"
@@ -36,24 +35,16 @@ const SignIn = () => {
           required
           className="p-2.5 rounded-md border border-gray-300 text-base"
         />
-        <input
-          type="password"
-          placeholder="Confirm password"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-          required
-          className="p-2.5 rounded-md border border-gray-300 text-base"
-        />
         <button
           type="submit"
           className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2"
         >
-          Sign Up
+          Sign In
         </button>
         <div className="text-[15px] text-[#666] mt-2">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-700 no-underline font-medium">
-            Sign In
+          Don't have an account?{' '}
+          <Link to="/auth/signup" className="text-blue-700 no-underline font-medium">
+            Sign Up
           </Link>
         </div>
       </form>
@@ -61,4 +52,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

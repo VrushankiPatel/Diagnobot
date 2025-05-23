@@ -3,8 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer"
 import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import SignIn from "./pages/SignIn";
+import Login from "./pages/auth/Login";
+import SignIn from "./pages/auth/SignIn";
 import './App.css';
 
 function App() {
@@ -13,8 +13,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignIn />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/signup" element={<SignIn />} />
         </Routes>
         <Footer />
       </div>

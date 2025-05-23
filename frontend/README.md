@@ -228,6 +228,12 @@ Features:
 - 404 Page Not Found
 - 500 Internal Error
 
+### c. **Privacy Policy Page** - `/privacy`
+
+
+### d. **Terms of Service Page** - `/terms`
+
+
 ---
 
 ## 📂 Components & Integration Checklist

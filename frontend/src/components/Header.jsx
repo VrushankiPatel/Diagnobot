@@ -21,9 +21,9 @@ const Header = () => {
           Home
         </Link>
         <Link
-          to="/login"
+          to="/auth/login"
           className={`no-underline font-medium text-base transition-colors duration-200 ${
-            location.pathname === '/login' ? 'text-blue-600' : 'text-gray-900'
+            location.pathname === '/auth/login' ? 'text-blue-600' : 'text-gray-900'
           }`}
         >
           Login
