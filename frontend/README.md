@@ -48,7 +48,6 @@ frontend/
 │   ├── assets/        # Static files (images, icons)
 │   ├── components/    # Reusable UI components
 │   ├── pages/         # Page-level components
-│   ├── routes/        # Route definitions
 │   ├── store/         # Zustand store(s)
 │   ├── utils/         # Helper functions
 │   ├── hooks/         # Custom hooks

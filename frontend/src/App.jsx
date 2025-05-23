@@ -5,6 +5,7 @@ import Footer from "./components/Footer"
 import Landing from "./pages/Landing";
 import Login from "./pages/auth/Login";
 import SignIn from "./pages/auth/SignIn";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import Privacy from "./pages/PrivacyPolicy";
 import Terms from "./pages/TOS";
 import './App.css';
@@ -12,7 +13,7 @@ import './App.css';
 function App() {
  const location = useLocation();
   // List all paths where i'll HIDE the header
-  const hideHeaderPaths = ['/', '/auth/login', '/auth/signup', '/privacy', '/terms'];
+  const hideHeaderPaths = ['/', '/auth/login', '/auth/signup', '/privacy', '/terms', '/auth/forgot-password'];
 
   const hideHeader = hideHeaderPaths.includes(location.pathname);
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/signup" element={<SignIn />} />
+          <Route path="/auth/forgot-password" element={<ForgotPassword />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
         </Routes>
