@@ -2,16 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer style={{
-      width: '100%',
-      background: '#f6f7f9',
-      color: '#888',
-      textAlign: 'center',
-      padding: '20px 0',
-      fontSize: 15,
-      borderTop: '1px solid #e5e7eb',
-      marginTop: 40,
-    }}>
+    <footer className="w-full bg-gray-100 text-gray-400 text-center py-5 text-[15px] border-t border-gray-200 mt-10">
       &copy; {new Date().getFullYear()} Diagnobot. All rights reserved.
     </footer>
   );

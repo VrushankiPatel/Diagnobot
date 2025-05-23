@@ -13,25 +13,19 @@ const Login = () => {
   };
 
   return (
-    <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f6f7f9' }}>
-      <form onSubmit={handleSubmit} style={{
-        background: '#fff',
-        padding: 32,
-        borderRadius: 12,
-        boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
-        minWidth: 320,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 18,
-      }}>
-        <h2 style={{ margin: 0, fontWeight: 700, fontSize: 24, color: '#222' }}>Login</h2>
+    <div className="min-h-[70vh] flex items-center justify-center bg-[#f6f7f9]">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-xl shadow-lg min-w-[320px] flex flex-col gap-5"
+      >
+        <h2 className="m-0 font-bold text-2xl text-[#222]">Login</h2>
         <input
           type="email"
           placeholder="Email address"
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
-          style={{ padding: 10, borderRadius: 6, border: '1px solid #ddd', fontSize: 16 }}
+          className="p-2.5 rounded-md border border-gray-300 text-base"
         />
         <input
           type="password"
@@ -39,24 +33,19 @@ const Login = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
-          style={{ padding: 10, borderRadius: 6, border: '1px solid #ddd', fontSize: 16 }}
+          className="p-2.5 rounded-md border border-gray-300 text-base"
         />
-        <button type="submit" style={{
-          background: 'linear-gradient(90deg, #3b82f6 0%, #2563eb 100%)',
-          color: '#fff',
-          border: 'none',
-          borderRadius: 8,
-          fontSize: 17,
-          fontWeight: 600,
-          padding: '10px 0',
-          cursor: 'pointer',
-          marginTop: 8,
-        }}>
+        <button
+          type="submit"
+          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2"
+        >
           Sign In
         </button>
-        <div style={{ fontSize: 15, color: '#666', marginTop: 8 }}>
+        <div className="text-[15px] text-[#666] mt-2">
           Don't have an account?{' '}
-          <Link to="/signup" style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 500 }}>Sign Up</Link>
+          <Link to="/signup" className="text-blue-700 no-underline font-medium">
+            Sign Up
+          </Link>
         </div>
       </form>
     </div>

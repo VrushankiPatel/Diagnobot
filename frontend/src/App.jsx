@@ -5,6 +5,7 @@ import Footer from "./components/Footer"
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
+import './App.css';
 
 function App() {
   return (

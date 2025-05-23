@@ -4,50 +4,27 @@ import { Link, useLocation } from 'react-router-dom';
 const Header = () => {
   const location = useLocation();
   return (
-    <header style={{
-      width: '90%',
-      background: '#fff',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-      padding: '0 40px',
-      height: 64,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      position: 'sticky',
-      top: 0,
-      zIndex: 10,
-    }}>
-      <Link to="/" style={{
-        fontWeight: 700,
-        fontSize: 22,
-        color: '#2563eb',
-        textDecoration: 'none',
-        letterSpacing: 1,
-      }}>
+    <header className="w-[100%] bg-white shadow-md px-10 h-16 flex items-center justify-between sticky top-0 z-10">
+      <Link
+        to="/"
+        className="font-bold text-[22px] text-blue-600 no-underline tracking-wide"
+      >
         Diagnobot
       </Link>
-      <nav style={{ display: 'flex', gap: 24 }}>
+      <nav className="flex gap-6">
         <Link
           to="/"
-          style={{
-            color: location.pathname === '/' ? '#2563eb' : '#222',
-            textDecoration: 'none',
-            fontWeight: 500,
-            fontSize: 16,
-            transition: 'color 0.2s',
-          }}
+          className={`no-underline font-medium text-base transition-colors duration-200 ${
+            location.pathname === '/' ? 'text-blue-600' : 'text-gray-900'
+          }`}
         >
           Home
         </Link>
         <Link
           to="/login"
-          style={{
-            color: location.pathname === '/login' ? '#2563eb' : '#222',
-            textDecoration: 'none',
-            fontWeight: 500,
-            fontSize: 16,
-            transition: 'color 0.2s',
-          }}
+          className={`no-underline font-medium text-base transition-colors duration-200 ${
+            location.pathname === '/login' ? 'text-blue-600' : 'text-gray-900'
+          }`}
         >
           Login
         </Link>

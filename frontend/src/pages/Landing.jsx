@@ -5,63 +5,30 @@ const Landing = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{
-      minHeight: '80vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: '#f6f7f9',
-      padding: '40px 0',
-    }}>
+    <div className="min-h-[80vh] flex items-center justify-center bg-[#f6f7f9] py-10">
       {/* Left Section */}
-      <div style={{
-        flex: 1,
-        maxWidth: 500,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        gap: 24,
-        paddingLeft: 40,
-      }}>
-        <div style={{ fontWeight: 700, fontSize: 22, color: '#222', marginBottom: 16 }}>Diagnobot</div>
-        <h1 style={{ fontSize: 36, fontWeight: 700, margin: 0, color: '#222' }}>
+      <div className="flex-1 max-w-[500px] flex flex-col justify-center gap-6 pl-10">
+        <div className="font-bold text-[22px] text-[#222] mb-4">Diagnobot</div>
+        <h1 className="text-[36px] font-bold text-[#222] m-0">
           AI-Powered Healthcare Automation
         </h1>
-        <p style={{ color: '#666', fontSize: 18, margin: 0 }}>
+        <p className="text-[#666] text-lg m-0">
           Streamlined, intelligent solutions to manage healthcare efficiently.
         </p>
         <button
-          style={{
-            marginTop: 24,
-            padding: '12px 32px',
-            background: 'linear-gradient(90deg, #3b82f6 0%, #2563eb 100%)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 8,
-            fontSize: 18,
-            fontWeight: 600,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(59,130,246,0.08)',
-            width: 'fit-content',
-          }}
+          className="mt-6 px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-lg font-semibold cursor-pointer shadow-md w-fit"
           onClick={() => navigate('/login')}
         >
           Get Started
         </button>
       </div>
       {/* Right Section */}
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 320,
-        paddingRight: 40,
-      }}>
+      <div className="flex-1 flex items-center justify-center min-w-[320px] pr-10">
         <img
-          src={'/AI Healthcare App UI Designs.png'}
+          src={'/diagnobot home img.png'}
           alt="Healthcare Illustration"
-          style={{ maxWidth: '100%', height: 320, objectFit: 'contain', borderRadius: 16, boxShadow: '0 4px 24px rgba(0,0,0,0.04)' }}
+          className="max-w-full h-[320px] object-contain rounded-xl shadow-lg"
+          style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.04)' }}
         />
       </div>
     </div>
