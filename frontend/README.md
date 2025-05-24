@@ -118,7 +118,10 @@ Features:
 - Email + Password fields
 - "Forgot password" and "Signup" links
 - OAuth option (if enabled)
-
+- Redirect after login:
+    - User → `/user/dashboard`
+    - Doctor → `/doctor/dashboard`
+    
 ### b. **Signup Tabs (User/Doctor)**
 
 Features:
