@@ -8,6 +8,13 @@ import SignIn from "./pages/auth/SignIn";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Privacy from "./pages/PrivacyPolicy";
 import Terms from "./pages/TOS";
+
+//USER PAGES
+import UserDashboard from "./pages/user/UDashboard";
+
+// DOCTOR PAGES
+import DoctorDashboard from "./pages/doctor/DDashboard";
+
 import './App.css';
 
 function App() {
@@ -28,6 +35,15 @@ function App() {
           <Route path="/auth/forgot-password" element={<ForgotPassword />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+
+          {/* User Routes */}
+          <Route path="/user/dashboard" element={<UserDashboard />} />
+
+          {/* Doctor Routes */}
+          <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+
+          {/* Catch-all route for 404 */}
+          <Route path="*" element={<div className="text-center text-gray-500 mt-10">Page not found</div>} />
         </Routes>
         </main>
         <Footer />

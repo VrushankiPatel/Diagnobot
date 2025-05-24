@@ -6,6 +6,8 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPwd, setShowPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // Doctor fields
   const [docEmail, setDocEmail] = useState('');
@@ -13,24 +15,70 @@ const Login = () => {
   const [docShowPwd, setDocShowPwd] = useState(false);
   const [license, setLicense] = useState('');
   const [specialty, setSpecialty] = useState('');
+  const [docLoading, setDocLoading] = useState(false);
+  const [docError, setDocError] = useState('');
 
   const navigate = useNavigate();
 
-  const handleUserLogin = (e) => {
+  // Simulate authentication (replace with real API call)
+  const fakeAuth = (isDoctor = false) =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (
+          (!isDoctor && email && password ) ||
+          (isDoctor && docEmail && docPassword && license && specialty)
+        ) {
+          resolve();
+        } else {
+          reject(new Error("Invalid credentials. Please check your details."));
+        }
+      }, 1500);
+    });
+
+  const handleUserLogin = async (e) => {
     e.preventDefault();
-    // Placeholder: Add user authentication logic here
-    navigate('/');
+    setError('');
+    setLoading(true);
+    try {
+      await fakeAuth(false);
+      setLoading(false);
+      navigate('/user/dashboard');
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
   };
 
-  const handleDoctorLogin = (e) => {
+  const handleDoctorLogin = async (e) => {
     e.preventDefault();
-    // Placeholder: Add doctor authentication logic here
-    navigate('/');
+    setDocError('');
+    setDocLoading(true);
+    try {
+      await fakeAuth(true);
+      setDocLoading(false);
+      navigate('/doctor/dashboard');
+    } catch (err) {
+      setDocLoading(false);
+      setDocError(err.message);
+    }
   };
 
   return (
-   <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 animate-fade-in py-12 px-8">
+    <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 animate-fade-in py-12 px-8">
       <div className="bg-white py-12 px-8 rounded-2xl shadow-2xl min-w-[340px] w-full max-w-md flex flex-col gap-6 border border-blue-100 animate-slide-up">
+
+        {/* Back Button */}
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="mb-2 flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium transition self-start"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Home
+        </button>
+        
         {/* Toggle Tabs */}
         <div className="flex justify-center mb-4">
           <button
@@ -64,8 +112,13 @@ const Login = () => {
               Welcome Back
             </h2>
             <p className="text-gray-500 text-center text-sm mb-2 animate-fade-in-down delay-100">
-              Log in to your DiagnoBot account
+              Sign in to your DiagnoBot account
             </p>
+            {error && (
+              <div className="bg-red-50 text-red-700 rounded px-3 py-2 text-sm text-center animate-fade-in">
+                {error}
+              </div>
+            )}
             <input
               type="email"
               placeholder="Email address"
@@ -73,6 +126,7 @@ const Login = () => {
               onChange={e => setEmail(e.target.value)}
               required
               className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-150"
+              disabled={loading}
             />
             <div className="relative animate-fade-in delay-200">
               <input
@@ -82,6 +136,7 @@ const Login = () => {
                 onChange={e => setPassword(e.target.value)}
                 required
                 className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none w-full pr-10"
+                disabled={loading}
               />
               <button
                 type="button"
@@ -89,6 +144,7 @@ const Login = () => {
                 onClick={() => setShowPwd((v) => !v)}
                 tabIndex={-1}
                 aria-label={showPwd ? "Hide password" : "Show password"}
+                disabled={loading}
               >
                 {showPwd ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -105,9 +161,18 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-300"
+              disabled={loading}
+              className={`bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-300 flex items-center justify-center ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Log In
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="loader"></span> Signing In...
+                </span>
+              ) : (
+                "Sign In"
+              )}
             </button>
             <div className="flex justify-between items-center mt-2 text-sm animate-fade-in delay-400">
               <Link to="/auth/forgot-password" className="text-blue-600 hover:underline font-medium transition-colors">
@@ -130,8 +195,13 @@ const Login = () => {
               Doctor Login
             </h2>
             <p className="text-gray-500 text-center text-sm mb-2 animate-fade-in-down delay-100">
-              Log in as a verified healthcare professional
+              Sign in as a verified healthcare professional
             </p>
+            {docError && (
+              <div className="bg-red-50 text-red-700 rounded px-3 py-2 text-sm text-center animate-fade-in">
+                {docError}
+              </div>
+            )}
             <input
               type="email"
               placeholder="Doctor Email address"
@@ -139,6 +209,7 @@ const Login = () => {
               onChange={e => setDocEmail(e.target.value)}
               required
               className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-150"
+              disabled={docLoading}
             />
             <div className="relative animate-fade-in delay-200">
               <input
@@ -148,6 +219,7 @@ const Login = () => {
                 onChange={e => setDocPassword(e.target.value)}
                 required
                 className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none w-full pr-10"
+                disabled={docLoading}
               />
               <button
                 type="button"
@@ -155,6 +227,7 @@ const Login = () => {
                 onClick={() => setDocShowPwd((v) => !v)}
                 tabIndex={-1}
                 aria-label={docShowPwd ? "Hide password" : "Show password"}
+                disabled={docLoading}
               >
                 {docShowPwd ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -176,6 +249,7 @@ const Login = () => {
               onChange={e => setLicense(e.target.value)}
               required
               className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-250"
+              disabled={docLoading}
             />
             <input
               type="text"
@@ -184,12 +258,22 @@ const Login = () => {
               onChange={e => setSpecialty(e.target.value)}
               required
               className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-300"
+              disabled={docLoading}
             />
             <button
               type="submit"
-              className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-350"
+              disabled={docLoading}
+              className={`bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-350 flex items-center justify-center ${
+                docLoading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Log In
+              {docLoading ? (
+                <span className="flex items-center gap-2">
+                  <span className="loader"></span> Signing In...
+                </span>
+              ) : (
+                "Sign In"
+              )}
             </button>
             <div className="text-[15px] text-[#666] mt-2 text-center animate-fade-in delay-400">
               Don't have a doctor account?{' '}
@@ -200,7 +284,7 @@ const Login = () => {
           </form>
         )}
       </div>
-      {/* Animations */}
+      {/* Animations & Loader */}
       <style>{`
         @keyframes fade-in {
           0% { opacity: 0 }
@@ -225,6 +309,19 @@ const Login = () => {
         .delay-350 { animation-delay: 0.35s; }
         .delay-400 { animation-delay: 0.4s; }
         .delay-500 { animation-delay: 0.5s; }
+        .loader {
+          border: 3px solid #e0e7ef;
+          border-top: 3px solid #2563eb;
+          border-radius: 50%;
+          width: 1.2em;
+          height: 1.2em;
+          animation: spin 0.7s linear infinite;
+          display: inline-block;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg);}
+          100% { transform: rotate(360deg);}
+        }
       `}</style>
     </div>
   );

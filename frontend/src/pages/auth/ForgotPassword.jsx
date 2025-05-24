@@ -13,12 +13,12 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 animate-fade-in">
+    <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 animate-fade-in py-6 px-2 sm:py-10 sm:px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow-2xl min-w-[340px] flex flex-col gap-6 border border-blue-100 animate-slide-up"
+        className="bg-white py-8 px-3 sm:py-10 sm:px-6 md:py-12 md:px-8 rounded-2xl shadow-2xl w-full max-w-md flex flex-col gap-6 border border-blue-100 animate-slide-up"
       >
-        <h2 className="m-0 font-extrabold text-2xl text-blue-700 text-center tracking-wide animate-fade-in-down">
+        <h2 className="m-0 font-extrabold text-xl sm:text-2xl text-blue-700 text-center tracking-wide animate-fade-in-down">
           Forgot Password
         </h2>
         <p className="text-gray-500 text-center text-sm mb-2 animate-fade-in-down delay-100">
