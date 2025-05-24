@@ -2,62 +2,261 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const SignIn = () => {
+  const [activeTab, setActiveTab] = useState('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPwd, setShowPwd] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showConfirmPwd, setShowConfirmPwd] = useState(false);
+
+  // Doctor fields
+  const [docEmail, setDocEmail] = useState('');
+  const [docPassword, setDocPassword] = useState('');
+  const [docShowPwd, setDocShowPwd] = useState(false);
+  const [docConfirmPassword, setDocConfirmPassword] = useState('');
+  const [docShowConfirmPwd, setDocShowConfirmPwd] = useState(false);
+  const [license, setLicense] = useState('');
+  const [specialty, setSpecialty] = useState('');
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleUserSignUp = (e) => {
     e.preventDefault();
-    // Placeholder: Add registration logic here
+    // Placeholder: Add user registration logic here
+    navigate('/auth/login');
+  };
+
+  const handleDoctorSignUp = (e) => {
+    e.preventDefault();
+    // Placeholder: Add doctor registration logic here
     navigate('/auth/login');
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 animate-fade-in">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow-2xl min-w-[340px] flex flex-col gap-6 border border-blue-100 animate-slide-up"
-      >
-        <h2 className="m-0 font-extrabold text-2xl text-blue-700 text-center tracking-wide animate-fade-in-down">Create Account</h2>
-        <p className="text-gray-500 text-center text-sm mb-2 animate-fade-in-down delay-100">Sign up for a free DiagnoBot account</p>
-        <input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-150"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-          className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-200"
-        />
-        <input
-          type="password"
-          placeholder="Confirm password"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-          required
-          className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-250"
-        />
-        <button
-          type="submit"
-          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-300"
-        >
-          Sign Up
-        </button>
-        <div className="text-[15px] text-[#666] mt-2 text-center animate-fade-in delay-400">
-          Already have an account?{' '}
-          <Link to="/auth/login" className="text-blue-700 no-underline font-semibold hover:underline transition-colors">
-            Sign In
-          </Link>
+    <div className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 animate-fade-in py-12 px-8">
+      <div className="bg-white py-12 px-8 rounded-2xl shadow-2xl min-w-[340px] w-full max-w-md flex flex-col gap-6 border border-blue-100 animate-slide-up">
+        {/* Toggle Tabs */}
+        <div className="flex justify-center mb-4">
+          <button
+            className={`px-4 py-2 rounded-l-lg font-semibold transition-colors duration-200 ${
+              activeTab === 'user'
+                ? 'bg-blue-600 text-white'
+                : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+            }`}
+            onClick={() => setActiveTab('user')}
+            type="button"
+          >
+            User Sign Up
+          </button>
+          <button
+            className={`px-4 py-2 rounded-r-lg font-semibold transition-colors duration-200 ${
+              activeTab === 'doctor'
+                ? 'bg-blue-600 text-white'
+                : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+            }`}
+            onClick={() => setActiveTab('doctor')}
+            type="button"
+          >
+            Doctor Sign Up
+          </button>
         </div>
-      </form>
+
+        {/* User Sign Up */}
+        {activeTab === 'user' && (
+          <form onSubmit={handleUserSignUp} className="flex flex-col gap-5">
+            <h2 className="m-0 font-extrabold text-2xl text-blue-700 text-center tracking-wide animate-fade-in-down">
+              Create Account
+            </h2>
+            <p className="text-gray-500 text-center text-sm mb-2 animate-fade-in-down delay-100">
+              Sign up for a free DiagnoBot account
+            </p>
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-150"
+            />
+            <div className="relative animate-fade-in delay-200">
+              <input
+                type={showPwd ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none w-full pr-10"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                onClick={() => setShowPwd((v) => !v)}
+                tabIndex={-1}
+                aria-label={showPwd ? "Hide password" : "Show password"}
+              >
+                {showPwd ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.336-3.234.938-4.675M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274.857-.676 1.664-1.186 2.393M15.54 15.54A5.978 5.978 0 0112 17c-3.314 0-6-2.686-6-6 0-.879.176-1.716.49-2.47" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            <div className="relative animate-fade-in delay-250">
+              <input
+                type={showConfirmPwd ? "text" : "password"}
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                required
+                className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none w-full pr-10"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                onClick={() => setShowConfirmPwd((v) => !v)}
+                tabIndex={-1}
+                aria-label={showConfirmPwd ? "Hide password" : "Show password"}
+              >
+                {showConfirmPwd ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.336-3.234.938-4.675M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274.857-.676 1.664-1.186 2.393M15.54 15.54A5.978 5.978 0 0112 17c-3.314 0-6-2.686-6-6 0-.879.176-1.716.49-2.47" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-300"
+            >
+              Sign Up
+            </button>
+            <div className="text-[15px] text-[#666] mt-2 text-center animate-fade-in delay-400">
+              Already have an account?{' '}
+              <Link to="/auth/login" className="text-blue-700 no-underline font-semibold hover:underline transition-colors">
+                Log In
+              </Link>
+            </div>
+          </form>
+        )}
+
+        {/* Doctor Sign Up */}
+        {activeTab === 'doctor' && (
+          <form onSubmit={handleDoctorSignUp} className="flex flex-col gap-5">
+            <h2 className="m-0 font-extrabold text-2xl text-blue-700 text-center tracking-wide animate-fade-in-down">
+              Doctor Registration
+            </h2>
+            <p className="text-gray-500 text-center text-sm mb-2 animate-fade-in-down delay-100">
+              Register as a verified healthcare professional
+            </p>
+            <input
+              type="email"
+              placeholder="Doctor Email address"
+              value={docEmail}
+              onChange={e => setDocEmail(e.target.value)}
+              required
+              className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-150"
+            />
+            <div className="relative animate-fade-in delay-200">
+              <input
+                type={docShowPwd ? "text" : "password"}
+                placeholder="Password"
+                value={docPassword}
+                onChange={e => setDocPassword(e.target.value)}
+                required
+                className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none w-full pr-10"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                onClick={() => setDocShowPwd((v) => !v)}
+                tabIndex={-1}
+                aria-label={docShowPwd ? "Hide password" : "Show password"}
+              >
+                {docShowPwd ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.336-3.234.938-4.675M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274.857-.676 1.664-1.186 2.393M15.54 15.54A5.978 5.978 0 0112 17c-3.314 0-6-2.686-6-6 0-.879.176-1.716.49-2.47" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            <div className="relative animate-fade-in delay-250">
+              <input
+                type={docShowConfirmPwd ? "text" : "password"}
+                placeholder="Confirm password"
+                value={docConfirmPassword}
+                onChange={e => setDocConfirmPassword(e.target.value)}
+                required
+                className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none w-full pr-10"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                onClick={() => setDocShowConfirmPwd((v) => !v)}
+                tabIndex={-1}
+                aria-label={docShowConfirmPwd ? "Hide password" : "Show password"}
+              >
+                {docShowConfirmPwd ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.336-3.234.938-4.675M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274.857-.676 1.664-1.186 2.393M15.54 15.54A5.978 5.978 0 0112 17c-3.314 0-6-2.686-6-6 0-.879.176-1.716.49-2.47" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            <input
+              type="text"
+              placeholder="Medical License Number"
+              value={license}
+              onChange={e => setLicense(e.target.value)}
+              required
+              className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-300"
+            />
+            <input
+              type="text"
+              placeholder="Specialty (e.g. Cardiology)"
+              value={specialty}
+              onChange={e => setSpecialty(e.target.value)}
+              required
+              className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-350"
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-400"
+            >
+              Sign Up
+            </button>
+            <div className="text-[15px] text-[#666] mt-2 text-center animate-fade-in delay-450">
+              Already have a doctor account?{' '}
+              <Link to="/auth/login" className="text-blue-700 no-underline font-semibold hover:underline transition-colors">
+                Log In
+              </Link>
+            </div>
+          </form>
+        )}
+      </div>
       {/* Animations */}
       <style>{`
         @keyframes fade-in {
@@ -80,7 +279,9 @@ const SignIn = () => {
         .delay-200 { animation-delay: 0.2s; }
         .delay-250 { animation-delay: 0.25s; }
         .delay-300 { animation-delay: 0.3s; }
+        .delay-350 { animation-delay: 0.35s; }
         .delay-400 { animation-delay: 0.4s; }
+        .delay-450 { animation-delay: 0.45s; }
       `}</style>
     </div>
   );
