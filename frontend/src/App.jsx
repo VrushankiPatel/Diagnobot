@@ -11,9 +11,19 @@ import Terms from "./pages/TOS";
 
 //USER PAGES
 import UserDashboard from "./pages/user/UDashboard";
+import USymptomChecker from "./pages/user/USymptomChecker";
+import UDiagnosis from "./pages/user/UDiagnosis";
+import UAppointments from "./pages/user/UAppointments";
+import UReports from "./pages/user/UReports";
+import USettings from "./pages/user/USettings";
+import UPayments from './pages/user/UPayments';
 
 // DOCTOR PAGES
 import DoctorDashboard from "./pages/doctor/DDashboard";
+import DoctorSchedule from "./pages/doctor/DSchedule";
+import DoctorConsultation from "./pages/doctor/DConsult";
+import DoctorSettings from "./pages/doctor/DSettings";
+import DoctorReports from "./pages/doctor/DReports";
 
 import './App.css';
 
@@ -38,9 +48,19 @@ function App() {
 
           {/* User Routes */}
           <Route path="/user/dashboard" element={<UserDashboard />} />
+          <Route path="/user/symptom-checker" element={<USymptomChecker />} />
+          <Route path="/user/diagnosis" element={<UDiagnosis />} />
+          <Route path="/user/appointments" element={<UAppointments />} />
+          <Route path="/user/reports" element={<UReports />} />
+          <Route path="/user/settings" element={<USettings />} />
+          <Route path="/user/payments" element={<UPayments />} />
 
           {/* Doctor Routes */}
           <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+          <Route path="/doctor/schedule" element={<DoctorSchedule />} />
+          <Route path="/doctor/consultation" element={<DoctorConsultation />} />
+          <Route path="/doctor/settings" element={<DoctorSettings />} />
+          <Route path="/doctor/reports" element={<DoctorReports />} />
 
           {/* Catch-all route for 404 */}
           <Route path="*" element={<div className="text-center text-gray-500 mt-10">Page not found</div>} />

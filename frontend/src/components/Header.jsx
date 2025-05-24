@@ -8,12 +8,14 @@ const userLinks = [
   { to: "/user/appointments", label: "Appointments" },
   { to: "/user/reports", label: "Reports" },
   { to: "/user/settings", label: "Settings" },
+  { to: "/user/payments", label: "Payments" },
 ];
 
 const doctorLinks = [
   { to: "/doctor/dashboard", label: "Dashboard" },
   { to: "/doctor/schedule", label: "Schedule" },
   { to: "/doctor/consultation", label: "Consultation" },
+  { to: "/doctor/reports", label: "Reports" },
   { to: "/doctor/settings", label: "Settings" },
 ];
 
@@ -26,7 +28,7 @@ const Header = () => {
 
   // Listen for changes in location and localStorage (userType)
   useEffect(() => {
-    setUserType(localStorage.getItem("userType") || "user");
+    setUserType(localStorage.getItem("userType") || "doctor");
   }, [location]);
 
   const links = userType === "doctor" ? doctorLinks : userLinks;
