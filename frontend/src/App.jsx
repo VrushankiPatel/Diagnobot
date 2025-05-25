@@ -34,10 +34,15 @@ function App() {
 
   const hideHeader = hideHeaderPaths.includes(location.pathname);
 
+  // Helper to go back to previous page
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   return (
-      <div className="flex flex-col min-h-screen">
-        {!hideHeader && <Header />}
-        <main className="flex-1">
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {!hideHeader && <Header />}
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/auth/login" element={<Login />} />
@@ -63,11 +68,51 @@ function App() {
           <Route path="/doctor/reports" element={<DoctorReports />} />
 
           {/* Catch-all route for 404 */}
-          <Route path="*" element={<div className="text-center text-gray-500 mt-10">Page not found</div>} />
+          <Route
+            path="*"
+            element={
+              <div className="flex flex-col items-center justify-center min-h-[60vh]">
+                <h1 className="text-6xl font-extrabold text-blue-600 mb-4">404</h1>
+                <h2 className="text-2xl font-semibold mb-2 text-gray-800">Page Not Found</h2>
+                <p className="mb-6 text-gray-500 text-center max-w-md">
+                  Sorry, the page you are looking for does not exist or has been moved.<br />
+                  Please check the URL or return to your previous page.
+                </p>
+                <button
+                  onClick={handleGoBack}
+                  className="px-6 py-2 rounded bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition"
+                >
+                  Go Back
+                </button>
+              </div>
+            }
+          />
+
+            {/* 500 Internal Error Route */}
+          <Route
+            path="/500"
+            element={
+              <div className="flex flex-col items-center justify-center min-h-[60vh]">
+                <h1 className="text-6xl font-extrabold text-red-600 mb-4">500</h1>
+                <h2 className="text-2xl font-semibold mb-2 text-gray-800">Internal Server Error</h2>
+                <p className="mb-6 text-gray-500 text-center max-w-md">
+                  Oops! Something went wrong on our end.<br />
+                  Please try again later or return to your previous page.
+                </p>
+                <button
+                  onClick={handleGoBack}
+                  className="px-6 py-2 rounded bg-red-600 text-white font-semibold shadow hover:bg-red-700 transition"
+                >
+                  Go Back
+                </button>
+              </div>
+            }
+          />
+          
         </Routes>
-        </main>
-        <Footer />
-      </div>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
