@@ -77,30 +77,30 @@ function Profile() {
       </div>
       {edit ? (
         <form onSubmit={handleSave} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+         <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">Name</label>
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 px-4 py-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">Email</label>
             <input
               type="email"
               name="email"
               value={form.email}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 px-4 py-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Profile Image</label>
+         <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 pl-1">Profile Image</label>
             <button
               type="button"
               onClick={handleImageClick}
