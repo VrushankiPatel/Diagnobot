@@ -56,7 +56,7 @@ const DDashboard = () => {
       {/* Greeting */}
       <div className="flex-1">
         <h1 className="text-3xl md:text-4xl font-bold text-blue-700 mb-2 text-center md:text-left animate-fade-in-down delay-100">
-          Welcome back, {doctorProfile.name.split(" ")[1]} 👋
+          Welcome to your Diagnobot Dashboard {doctorProfile.name.split(" ")[1]} 👋
         </h1>
         <p className="text-gray-600 text-center md:text-left mb-2 animate-fade-in-down delay-200">
           Manage your consultations, schedule, and patient interactions efficiently.

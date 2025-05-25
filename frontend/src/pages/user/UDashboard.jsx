@@ -75,7 +75,7 @@ const UDashboard = () => {
         {/* Greeting */}
         <div className="flex-1">
           <h1 className="text-3xl md:text-4xl font-bold text-blue-700 mb-2 text-center md:text-left animate-fade-in-down delay-100">
-            Hi {userName} 👋, here is your Diagnobot Dashboard
+            Hi {userName.split(" ")[0]} 👋, here is your Diagnobot Dashboard
           </h1>
           <p className="text-gray-600 text-center md:text-left mb-2 animate-fade-in-down delay-200">
             Manage your health journey, appointments, and reports all in one place.
@@ -126,49 +126,54 @@ const UDashboard = () => {
                 <div className="font-medium">No upcoming appointments. Book one to get started!</div>
               </div>
             ) : (
-              Appointments.map((appt, idx) => (
-                <div
-                  key={idx}
-                  className={`relative group bg-white rounded-xl p-6 shadow-md border border-blue-100 flex flex-col md:flex-row md:items-center md:justify-between transition hover:shadow-2xl hover:border-blue-400 animate-stagger`}
-                  style={{ animationDelay: `${idx * 0.08 + 0.2}s` }}
-                >
-                  <div className="flex items-center gap-4">
-                    {/* Time & Date */}
-                    <div className="hidden md:flex flex-col items-center pr-6 border-r border-blue-50">
-                      <div className="text-blue-600 font-bold text-xl">{appt.time}</div>
-                      <div className="text-xs text-gray-400">{appt.date}</div>
-                    </div>
-                    {/* Doctor Avatar */}
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shadow border border-blue-100 mr-3">
-                      <span className="text-lg font-bold text-blue-600">{appt.doctor.split(" ")[1]?.[0] || "D"}</span>
-                    </div>
-                    {/* Details */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-blue-700">{appt.type}</span>
-                        <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full">{appt.doctor}</span>
-                      </div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                          <path d="M17.657 16.657L13.414 12.414a2 2 0 00-2.828 0l-4.243 4.243" />
-                          <path d="M7 7h.01" />
-                          <path d="M17 7h.01" />
-                          <circle cx="12" cy="12" r="10" />
-                        </svg>
-                        <span className="text-gray-600 text-sm">{appt.location}</span>
-                      </div>
-                      <div className="text-gray-500 text-xs italic">{appt.notes}</div>
-                    </div>
-                  </div>
-                  <Link
-                    to="/user/appointments"
-                    className="absolute top-4 right-4 md:static md:ml-4 mt-3 md:mt-0 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-semibold shadow hover:scale-105 hover:bg-blue-700 transition text-center text-sm"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              ))
-            )}
+   Appointments.map((appt, idx) => (
+  <div
+    key={idx}
+    className={`relative group bg-white rounded-xl p-6 shadow-md border border-blue-100 flex flex-col md:flex-row md:items-center md:justify-between transition hover:shadow-2xl hover:border-blue-400 animate-stagger`}
+    style={{ animationDelay: `${idx * 0.08 + 0.2}s` }}
+  >
+    <div className="flex items-center gap-4">
+      {/* Time & Date */}
+      <div className="hidden md:flex flex-col items-center pr-6 border-r border-blue-50">
+        <div className="text-blue-600 font-bold text-xl">{appt.time}</div>
+        <div className="text-xs text-gray-400">{appt.date}</div>
+      </div>
+      {/* Doctor Avatar */}
+      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shadow border border-blue-100 mr-3">
+        <span className="text-lg font-bold text-blue-600">{appt.doctor.split(" ")[1]?.[0] || "D"}</span>
+      </div>
+      {/* Details */}
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="font-semibold text-blue-700">{appt.type}</span>
+          {/* Doctor name for desktop */}
+          <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full hidden md:inline">{appt.doctor}</span>
+        </div>
+        {/* Doctor name for mobile, placed under type */}
+        <div className="md:hidden mb-1">
+          <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full">{appt.doctor}</span>
+        </div>
+        <div className="flex items-center gap-2 mb-1">
+          <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path d="M17.657 16.657L13.414 12.414a2 2 0 00-2.828 0l-4.243 4.243" />
+            <path d="M7 7h.01" />
+            <path d="M17 7h.01" />
+            <circle cx="12" cy="12" r="10" />
+          </svg>
+          <span className="text-gray-600 text-sm">{appt.location}</span>
+        </div>
+        <div className="text-gray-500 text-xs italic">{appt.notes}</div>
+      </div>
+    </div>
+    <Link
+      to="/user/appointments"
+      className="absolute top-4 right-4 md:static md:ml-4 mt-3 md:mt-0 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-semibold shadow hover:scale-105 hover:bg-blue-700 transition text-center text-sm"
+    >
+      View Details
+    </Link>
+  </div>
+))
+)}
           </div>
         </div>
       </div>

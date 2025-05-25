@@ -28,7 +28,7 @@ const Header = () => {
 
   // Listen for changes in location and localStorage (userType)
   useEffect(() => {
-    setUserType(localStorage.getItem("userType") || "doctor");
+    setUserType(localStorage.getItem("userType") || "user");
   }, [location]);
 
   const links = userType === "doctor" ? doctorLinks : userLinks;
