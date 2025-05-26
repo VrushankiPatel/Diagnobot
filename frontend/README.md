@@ -21,7 +21,7 @@ This is the **frontend** component of the DiagnoBot project. It is built using *
 ### 1. Clone the repository
 
 ```bash
-cd diagnobot/frontend
+cd Diagnobot/frontend
 npm install
 ```
 
@@ -148,22 +148,27 @@ Route: `/user/dashboard`
     - On submit:
         - If Level 3 → AI Diagnosis page
         - If Level 2 → redirect to live chat/video
+
 2. **AI Diagnosis Page** — `/user/diagnosis`
     - Shows smart diagnosis suggestions from LLM
     - Basic care steps, OTC recommendations
     - Option to book doctor consultation
+
 3. **Appointment History** — `/user/appointments`
     - List of past and upcoming appointments
     - Status (Completed / Pending / Cancelled)
     - View attached reports, join session
+
 4. **Medical Reports** — `/user/reports`
     - Auto-generated reports from past visits
     - Download/print/share options
     - Update to dashboard after each interaction
+
 5. **Payments Page** — `/user/payments`
     - View history
     - Payment method management
     - Pay for appointments or premium access
+
 6. **User Profile/Settings** — `/user/settings`
     - Manage personal info, password
     - Notification preferences
@@ -180,13 +185,16 @@ Route: `/doctor/dashboard`
     - Set working hours
     - See upcoming appointments
     - Accept/reschedule appointments
+    
 2. **Consultation Room** — `/doctor/consultation`
     - Live chat/video UI with patient
     - Access to patient symptom form & history
     - Generate and submit medical report
+
 3. **Patient Reports** — `/doctor/reports`
     - View reports submitted for patients
     - Option to add/update notes
+
 4. **Doctor Profile/Settings** — `/doctor/settings`
     - Manage license details, bio, contact
     - Change availability
