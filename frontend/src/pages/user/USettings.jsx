@@ -289,7 +289,7 @@ function USettings() {
                   <button
                     type="button"
                     onClick={handleImageClick}
-                    className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                     tabIndex={-1}
                   >
                     <span className="px-3 py-1 bg-blue-600 text-white rounded shadow font-semibold text-sm hover:bg-blue-700 transition">
@@ -307,6 +307,9 @@ function USettings() {
                 </>
               )}
             </div>
+             {edit && (
+              <div className="text-xs text-gray-400 mb-1">Hover on image to edit</div>
+             )}
             {!edit && (
               <>
                 <div className="font-semibold text-lg text-blue-700">{profile.name}</div>
