@@ -23,6 +23,13 @@ This is the **frontend** component of the DiagnoBot project. It is built using *
 ```bash
 cd Diagnobot/frontend
 npm install
+npm install react-router-dom
+```
+
+Make sure to have tailwind installed as well
+
+```
+npm install tailwindcss @tailwindcss/vite
 ```
 
 ### 2. Run the development server
@@ -30,13 +37,6 @@ npm install
 ```bash
 npm run dev
 ```
-
-### 3. Build for production
-
-```bash
-npm run build
-```
-
 ---
 
 ## 🌐 Folder Structure
