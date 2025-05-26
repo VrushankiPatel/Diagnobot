@@ -67,7 +67,7 @@ const UDashboard = () => {
           <div className="font-semibold text-lg text-blue-700">{userName}</div>
           <button
             className="mt-2 px-3 py-1 text-xs rounded bg-blue-50 text-blue-700 hover:bg-blue-100 transition font-medium shadow"
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate("/user/settings")}
           >
             Edit Profile
           </button>

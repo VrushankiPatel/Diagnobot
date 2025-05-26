@@ -28,7 +28,7 @@ npm install react-router-dom
 
 Make sure to have tailwind installed as well
 
-```
+```bash
 npm install tailwindcss @tailwindcss/vite
 ```
 
@@ -145,9 +145,7 @@ Route: `/user/dashboard`
 1. **Symptom Checker (Form)** — `/user/symptom-checker`
     - Text + Voice-to-Text (Whisper API)
     - Fields: Symptoms, duration, urgency level
-    - On submit:
-        - If Level 3 → AI Diagnosis page
-        - If Level 2 → redirect to live chat/video
+    - On submit redirect to AI Diagnosis page.
 
 2. **AI Diagnosis Page** — `/user/diagnosis`
     - Shows smart diagnosis suggestions from LLM
@@ -163,6 +161,7 @@ Route: `/user/dashboard`
     - Auto-generated reports from past visits
     - Download/print/share options
     - Update to dashboard after each interaction
+    - Symptom History: Let users view their previous diagnoses and symptom checks for comparison.
 
 5. **Payments Page** — `/user/payments`
     - View history
