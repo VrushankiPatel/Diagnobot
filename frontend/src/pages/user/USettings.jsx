@@ -422,12 +422,12 @@ function USettings() {
       )}
 
       {/* --- Account Tab --- */}
-{activeTab === "account" && (
-  <div className={tabAnim}>
-    <h3 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
+     {activeTab === "account" && (
+     <div className={tabAnim}>
+     <h3 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
       <span role="img" aria-label="user">👤</span> Account Settings
-    </h3>
-    <form onSubmit={handleAccountSave} className="space-y-3" aria-label="Account Settings">
+     </h3>
+     <form onSubmit={handleAccountSave} className="space-y-3" aria-label="Account Settings">
       <input
         name="email"
         value={accountForm.email}
@@ -489,14 +489,14 @@ function USettings() {
           Delete/Deactivate Account
         </button>
       </div>
-    </form>
+     </form>
 
-    {/* --- Change Password Section --- */}
-    <hr className="my-6 border-blue-100" />
-    <h4 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
+      {/* --- Change Password Section --- */}
+     <hr className="my-6 border-blue-100" />
+     <h4 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
       <span role="img" aria-label="lock">🔒</span> Change Password
-    </h4>
-    <form onSubmit={handlePwSubmit} className="space-y-3 w-full" aria-label="Change Password">
+     </h4>
+     <form onSubmit={handlePwSubmit} className="space-y-3 w-full" aria-label="Change Password">
       <div className="relative w-full">
         <input
           type={showPw.current ? "text" : "password"}
@@ -609,11 +609,11 @@ function USettings() {
       >
         {saving ? <span className="loader"></span> : "Update Password"}
       </button>
-    </form>
+     </form>
 
 
-    {/* --- Delete Modal --- */}
-    {showDeleteModal && (
+     {/* --- Delete Modal --- */}
+     {showDeleteModal && (
       <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
         <div className="bg-white rounded-2xl p-6 shadow-2xl border border-blue-200 max-w-md w-full relative">
           <button
@@ -641,33 +641,33 @@ function USettings() {
           </div>
         </div>
       </div>
-    )}
-    {/* --- Linked Calendar Section --- */}
-<hr className="my-6 border-blue-100" />
-<h4 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
-  <span role="img" aria-label="calendar">📅</span> Linked Calendar
-</h4>
-<div className="flex items-center gap-3 mb-4">
-  {calendar.linked ? (
-    <span className="text-green-600 font-semibold flex items-center gap-2">
-      <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+     )}
+      {/* --- Linked Calendar Section --- */}
+     <hr className="my-6 border-blue-100" />
+      <h4 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
+        <span role="img" aria-label="calendar">📅</span> Linked Calendar
+      </h4>
+     <div className="flex items-center gap-3 mb-4">
+        {calendar.linked ? (
+        <span className="text-green-600 font-semibold flex items-center gap-2">
+         <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
         <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
+       </svg>
       Linked with {calendar.provider}
-    </span>
-  ) : (
-    <button
+     </span>
+     ) : (
+      <button
       type="button"
       className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
       onClick={handleCalendarLink}
       aria-label="Link Calendar"
-    >
+     >
       Link Google Calendar
       </button>
      )}
-   </div>
-  </div>
-)}
+     </div>
+     </div>
+     )}
 
       {/* --- Notifications Tab --- */}
       {activeTab === "notifications" && (

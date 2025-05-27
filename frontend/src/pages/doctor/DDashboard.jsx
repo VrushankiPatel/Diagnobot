@@ -47,7 +47,7 @@ const DDashboard = () => {
         <div className="font-semibold text-lg text-blue-700">{doctorProfile.name}</div>
         <div className="text-gray-500 text-sm">{doctorProfile.specialty}</div>
         <Link
-          to="/profile"
+          to="/doctor/settings"
           className="mt-2 px-3 py-1 text-xs rounded bg-blue-50 text-blue-700 hover:bg-blue-100 transition font-medium shadow"
         >
           Edit Profile
