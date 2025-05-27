@@ -614,18 +614,60 @@ function DSettings() {
             </form>
           ) : (
             <div>
-              <div className="mb-4">
-                <div className="font-semibold text-lg text-blue-700">{profile.name}</div>
-                <div className="text-gray-600">{profile.email}</div>
-                <div className="text-gray-600">License: {profile.license}</div>
-                <div className="text-gray-600">Specialty: {profile.specialty}</div>
-                <div className="text-gray-600">Contact: {profile.contact}</div>
-                <div className="text-blue-500 text-sm mt-1">{profile.bio}</div>
-                {profile.about && <div className="text-blue-500 text-sm mt-1">{profile.about}</div>}
-                <div className="text-gray-600">Qualifications: {profile.qualifications}</div>
-                <div className="text-gray-600">Years of Experience: {profile.yearsOfExperience}</div>
-                <div className="text-gray-600">Certifications: {profile.certifications && profile.certifications.length > 0 ? profile.certifications.join(", ") : "None"}</div>
-                <div className="text-gray-600">Telemedicine Link: {profile.telemedicineLink}</div>
+              
+              <div className="mb-6">
+                <div className="font-semibold text-2xl text-blue-700 text-center">{profile.name}</div>
+                <div className="text-gray-500 text-center mb-2">{profile.email}</div>
+                <div className="flex flex-wrap justify-center gap-4 mt-4">
+                  <div className="bg-blue-50 rounded-lg px-4 py-2 min-w-[160px]">
+                    <div className="text-xs text-gray-500">License</div>
+                    <div className="font-medium text-blue-800">{profile.license || <span className="text-gray-400">—</span>}</div>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg px-4 py-2 min-w-[160px]">
+                    <div className="text-xs text-gray-500">Specialty</div>
+                    <div className="font-medium text-blue-800">{profile.specialty || <span className="text-gray-400">—</span>}</div>
+                  </div>
+                  <div className="bg-blue-50 rounded-lg px-4 py-2 min-w-[160px]">
+                    <div className="text-xs text-gray-500">Contact</div>
+                    <div className="font-medium text-blue-800">{profile.contact || <span className="text-gray-400">—</span>}</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                  <div className="bg-gray-50 rounded-lg px-4 py-3">
+                    <div className="text-xs text-gray-500 mb-1">Qualifications</div>
+                    <div className="text-gray-800">{profile.qualifications || <span className="text-gray-400">—</span>}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg px-4 py-3">
+                    <div className="text-xs text-gray-500 mb-1">Years of Experience</div>
+                    <div className="text-gray-800">{profile.yearsOfExperience || <span className="text-gray-400">—</span>}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg px-4 py-3 col-span-1 sm:col-span-2">
+                    <div className="text-xs text-gray-500 mb-1">Certifications</div>
+                    <div className="text-gray-800">
+                      {profile.certifications && profile.certifications.length > 0
+                        ? profile.certifications.join(", ")
+                        : <span className="text-gray-400">—</span>}
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg px-4 py-3 col-span-1 sm:col-span-2">
+                    <div className="text-xs text-gray-500 mb-1">Telemedicine Link</div>
+                    <div className="text-blue-700 break-all">
+                      {profile.telemedicineLink
+                        ? <a href={profile.telemedicineLink} target="_blank" rel="noopener noreferrer" className="underline">{profile.telemedicineLink}</a>
+                        : <span className="text-gray-400">—</span>}
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg px-4 py-3 mt-6 border border-blue-50">
+                  <div className="text-xs text-gray-500 mb-1">Bio</div>
+                  <div className="text-gray-800">{profile.bio || <span className="text-gray-400">—</span>}</div>
+                </div>
+                {profile.about && (
+                  <div className="bg-white rounded-lg px-4 py-3 mt-3 border border-blue-50">
+                    <div className="text-xs text-gray-500 mb-1">About Me</div>
+                    <div className="text-gray-800">{profile.about}</div>
+                  </div>
+                )}
               </div>
               <button
                 className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-semibold hover:bg-blue-100 transition w-full animate-fade-in"
@@ -636,6 +678,7 @@ function DSettings() {
               </button>
             </div>
           )}
+          
           {/* --- Availability Section --- */}
           <hr className="my-6 border-blue-100" />
           <h3 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
