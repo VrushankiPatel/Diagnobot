@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import Footer from "./components/Footer"
 import Landing from "./pages/Landing";
@@ -8,7 +9,6 @@ import SignIn from "./pages/auth/SignIn";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Privacy from "./pages/PrivacyPolicy";
 import Terms from "./pages/TOS";
-import Profile from "./components/Profile";
 
 //USER PAGES
 import UserDashboard from "./pages/user/UDashboard";
@@ -42,6 +42,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
+       <ScrollToTop />
       {!hideHeader && <Header />}
       <main className="flex-1">
         <Routes>
@@ -51,7 +52,6 @@ function App() {
           <Route path="/auth/forgot-password" element={<ForgotPassword />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/profile" element={<Profile />} />
 
           {/* User Routes */}
           <Route path="/user/dashboard" element={<UserDashboard />} />

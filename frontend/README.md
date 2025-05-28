@@ -239,7 +239,6 @@ Features:
 
 ### c. **Privacy Policy Page** - `/privacy`
 
-
 ### d. **Terms of Service Page** - `/terms`
 
 
