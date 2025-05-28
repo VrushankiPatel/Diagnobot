@@ -58,6 +58,8 @@ function DSchedule() {
   const [rescheduleModal, setRescheduleModal] = useState(null);
   const [rescheduleDate, setRescheduleDate] = useState("");
   const [rescheduleTime, setRescheduleTime] = useState("");
+  const [rescheduleNote, setRescheduleNote] = useState("");
+
 
   // --- Handlers ---
   const handleAddSlot = (day) => {
@@ -114,13 +116,14 @@ function DSchedule() {
     setRescheduleModal(appt);
     setRescheduleDate(appt.date);
     setRescheduleTime(appt.time);
+    setRescheduleNote(appt.notes || "");
   };
 
   const handleRescheduleSubmit = (e) => {
     e.preventDefault();
     setAppointments(appointments.map(a =>
       a.id === rescheduleModal.id
-        ? { ...a, date: rescheduleDate, time: rescheduleTime, status: "Rescheduled" }
+        ? { ...a, date: rescheduleDate, time: rescheduleTime, notes: rescheduleNote, status: "Rescheduled" }
         : a
     ));
     setRescheduleModal(null);
@@ -396,6 +399,16 @@ function DSchedule() {
                   type="time"
                   value={rescheduleTime}
                   onChange={e => setRescheduleTime(e.target.value)}
+                  className="w-full rounded-lg border-gray-300 px-3 py-2 shadow-sm"
+                  required
+                />
+              </div>
+               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                <input
+                  type="text"
+                  value={rescheduleNote}
+                  onChange={e => setRescheduleNote(e.target.value)}
                   className="w-full rounded-lg border-gray-300 px-3 py-2 shadow-sm"
                   required
                 />

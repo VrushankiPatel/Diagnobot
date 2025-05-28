@@ -27,8 +27,8 @@ const DDashboard = () => {
   const navigate = useNavigate();
 
   const handleVideoCall = () => {
-    const sessionId = Math.random().toString(36).substring(2, 10);
-    navigate(`/consult/${sessionId}`);
+    //const sessionId = Math.random().toString(36).substring(2, 10);
+    navigate('/doctor/consultation');
   };
 
   return (

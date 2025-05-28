@@ -26,6 +26,11 @@ const initialSecurity = {
     { type: "Password Change", time: "2025-05-20 13:44", device: "Mobile" },
     { type: "2FA Enabled", time: "2025-05-18 10:22", device: "Chrome, Windows" },
   ],
+   sessions: [
+    { id: 1, device: "Chrome, Windows", location: "Lagos", active: true },
+    { id: 2, device: "Safari, iPhone", location: "Abuja", active: false },
+  ],
+  twofaQr: "https://api.qrserver.com/v1/create-qr-code/?data=otpauth://totp/Diagnobot:JaneDoe?secret=JBSWY3DPEHPK3PXP&issuer=Diagnobot&size=150x150",
 };
 
 const initialPrivacy = {
@@ -39,7 +44,15 @@ const initialNotif = {
   appointment_push: true,
   health: true,
   offers: false,
+  urgent_sms: false,
+  cancellation_email: true,
 };
+
+const calendarProviders = [
+  { name: "Google", icon: "G" },
+  { name: "Outlook", icon: "O" },
+  { name: "Apple", icon: "A" },
+];
 
 function USettings() {
   // Tabs
@@ -80,7 +93,7 @@ function USettings() {
   const [privacy, setPrivacy] = useState(initialPrivacy);
 
   // Security
-  const [security] = useState(initialSecurity);
+    const [security, setSecurity] = useState(initialSecurity);
 
   // Toast
   const [toast, setToast] = useState({ show: false, msg: "", type: "success" });
@@ -146,6 +159,16 @@ function USettings() {
       setSaving(false);
       setToast({ show: true, msg: "Account settings updated!", type: "success" });
     }, 1200);
+  };
+
+   const handleLogoutSession = (id) => {
+    setSecurity(s => ({
+      ...s,
+      sessions: s.sessions.map(sess =>
+        sess.id === id ? { ...sess, active: false } : sess
+      )
+    }));
+    setToast({ show: true, msg: "Session logged out!", type: "success" });
   };
 
   // Delete/Deactivate
@@ -642,32 +665,36 @@ function USettings() {
         </div>
       </div>
      )}
+
       {/* --- Linked Calendar Section --- */}
-     <hr className="my-6 border-blue-100" />
-      <h4 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
-        <span role="img" aria-label="calendar">📅</span> Linked Calendar
-      </h4>
-     <div className="flex items-center gap-3 mb-4">
-        {calendar.linked ? (
-        <span className="text-green-600 font-semibold flex items-center gap-2">
-         <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/>
-       </svg>
-      Linked with {calendar.provider}
-     </span>
-     ) : (
-      <button
-      type="button"
-      className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
-      onClick={handleCalendarLink}
-      aria-label="Link Calendar"
-     >
-      Link Google Calendar
-      </button>
-     )}
-     </div>
-     </div>
-     )}
+          <hr className="my-6 border-blue-100" />
+          <h4 className="font-semibold text-blue-700 mb-2 flex items-center gap-2">
+            <span role="img" aria-label="calendar">📅</span> Linked Calendar
+          </h4>
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
+            {calendar.linked ? (
+              <span className="text-green-600 font-semibold flex items-center gap-2">
+                <svg className="w-5 h-5 inline" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Linked with {calendar.provider}
+              </span>
+            ) : (
+              calendarProviders.map(p => (
+                <button
+                  key={p.name}
+                  type="button"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+                  onClick={() => handleCalendarLink(p.name)}
+                  aria-label={`Link ${p.name} Calendar`}
+                >
+                  Link {p.name} Calendar
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      )}
 
       {/* --- Notifications Tab --- */}
       {activeTab === "notifications" && (
@@ -708,6 +735,28 @@ function USettings() {
                 aria-label="Appointment reminders (Push)"
               />
               Appointment reminders (Push)
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer transition hover:bg-blue-50 px-2 py-1 rounded">
+              <input
+                type="checkbox"
+                name="urgent_sms"
+                checked={notif.urgent_sms}
+                onChange={handleNotifChange}
+                className="accent-blue-600"
+                aria-label="Urgent notifications (SMS)"
+              />
+              Urgent notifications (SMS)
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer transition hover:bg-blue-50 px-2 py-1 rounded">
+              <input
+                type="checkbox"
+                name="cancellation_email"
+                checked={notif.cancellation_email}
+                onChange={handleNotifChange}
+                className="accent-blue-600"
+                aria-label="Cancellation notifications (Email)"
+              />
+              Cancellation notifications (Email)
             </label>
             <label className="flex items-center gap-2 cursor-pointer transition hover:bg-blue-50 px-2 py-1 rounded">
               <input
@@ -788,7 +837,27 @@ function USettings() {
               Logout from all devices
             </button>
           </div>
+           
           <div>
+            <div className="font-semibold text-blue-700 mb-1">Active Sessions</div>
+            <ul className="space-y-1 text-sm">
+              {security.sessions.map(sess => (
+                <li key={sess.id} className="flex items-center gap-2">
+                  <span className={`w-2 h-2 rounded-full ${sess.active ? "bg-green-500" : "bg-gray-300"}`}></span>
+                  <span>{sess.device} ({sess.location})</span>
+                  {sess.active && (
+                    <button
+                      className="ml-2 px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                      onClick={() => handleLogoutSession(sess.id)}
+                      aria-label="Logout session"
+                    >Logout</button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-4">
             <div className="font-semibold text-blue-700 mb-1">Recent Activity</div>
             <ul className="space-y-1 text-sm">
               {security.activity.map((a, i) => (

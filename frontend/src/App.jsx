@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import Footer from "./components/Footer"
 import Landing from "./pages/Landing";
@@ -41,6 +42,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
+       <ScrollToTop />
       {!hideHeader && <Header />}
       <main className="flex-1">
         <Routes>

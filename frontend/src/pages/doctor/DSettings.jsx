@@ -53,11 +53,9 @@ const initialNotif = {
   appointment_email: true,
   appointment_sms: false,
   appointment_push: true,
-  appointment_whatsapp: false,
   health: true,
   offers: false,
   urgent_sms: false,
-  urgent_whatsapp: false,
   cancellation_email: true,
 };
 
@@ -1098,17 +1096,6 @@ function DSettings() {
             <label className="flex items-center gap-2 cursor-pointer transition hover:bg-blue-50 px-2 py-1 rounded">
               <input
                 type="checkbox"
-                name="appointment_whatsapp"
-                checked={notif.appointment_whatsapp}
-                onChange={handleNotifChange}
-                className="accent-blue-600"
-                aria-label="Appointment reminders (WhatsApp)"
-              />
-              Appointment reminders (WhatsApp)
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer transition hover:bg-blue-50 px-2 py-1 rounded">
-              <input
-                type="checkbox"
                 name="appointment_push"
                 checked={notif.appointment_push}
                 onChange={handleNotifChange}
@@ -1127,17 +1114,6 @@ function DSettings() {
                 aria-label="Urgent notifications (SMS)"
               />
               Urgent notifications (SMS)
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer transition hover:bg-blue-50 px-2 py-1 rounded">
-              <input
-                type="checkbox"
-                name="urgent_whatsapp"
-                checked={notif.urgent_whatsapp}
-                onChange={handleNotifChange}
-                className="accent-blue-600"
-                aria-label="Urgent notifications (WhatsApp)"
-              />
-              Urgent notifications (WhatsApp)
             </label>
             <label className="flex items-center gap-2 cursor-pointer transition hover:bg-blue-50 px-2 py-1 rounded">
               <input
@@ -1247,6 +1223,7 @@ function DSettings() {
               Logout from all devices
             </button>
           </div>
+
           <div>
             <div className="font-semibold text-blue-700 mb-1">Active Sessions</div>
             <ul className="space-y-1 text-sm">
@@ -1265,6 +1242,7 @@ function DSettings() {
               ))}
             </ul>
           </div>
+
           <div className="mt-4">
             <div className="font-semibold text-blue-700 mb-1">Recent Activity</div>
             <ul className="space-y-1 text-sm">
@@ -1286,7 +1264,7 @@ function DSettings() {
             <span role="img" aria-label="download">📥</span> Export Health Data
           </h3>
           <div className="mb-4 text-gray-600 text-sm">
-            Download your diagnosis or medical history as PDF for your records or to share with your doctor.
+            Download your diagnosis or medical history as PDF for your records or to share with other healthcare providers.
           </div>
           <button
             className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold shadow hover:bg-green-700 transition"

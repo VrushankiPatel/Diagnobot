@@ -93,6 +93,9 @@ function DReports() {
   const [modalReport, setModalReport] = useState(null);
   const [doctorNotesDraft, setDoctorNotesDraft] = useState('');
   const [toast, setToast] = useState({ show: false, msg: '', type: 'success' });
+  const [uploadFile, setUploadFile] = useState(null);
+  const [sortOrder, setSortOrder] = useState('desc');
+  
 
   // --- Filtering ---
   const filteredReports = reports.filter(r =>
@@ -103,7 +106,11 @@ function DReports() {
       r.summary.toLowerCase().includes(search.toLowerCase()) ||
       (r.tags && r.tags.join(' ').toLowerCase().includes(search.toLowerCase())) ||
       r.date.includes(search)
-    )
+    ))
+    .sort((a, b) =>
+      sortOrder === 'desc'
+        ? new Date(b.date) - new Date(a.date)
+        : new Date(a.date) - new Date(b.date)
   );
 
   // --- Handlers ---
@@ -115,6 +122,19 @@ function DReports() {
   const handlePrint = (file) => {
     setToast({ show: true, msg: `Printing ${file}...`, type: 'success' });
     // Real print logic here
+  };
+
+  const handleUploadClick = () => {
+    document.getElementById('external-report-upload').click();
+  };
+  
+   const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadFile(file);
+      setToast({ show: true, msg: `Selected file: ${file.name}`, type: 'success' });
+      // Here you can add logic to actually upload or process the file
+    }
   };
 
   const handleSaveDoctorNote = (id) => {
@@ -146,10 +166,25 @@ function DReports() {
 
       {/* Search & Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
+       {/* Hidden file input */}
+        <input
+          id="external-report-upload"
+          type="file"
+          className="hidden"
+          onChange={handleFileChange}
+          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+        />
+        <button
+          className="px-1 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition w-full sm:w-auto"
+          onClick={handleUploadClick}
+          aria-label="Add External Report"
+        >
+          <span className="mr-1">📎</span> Add External Report
+        </button>
         <input
           type="text"
           placeholder="Search by patient, type, or tag..."
-          className="px-4 py-2 rounded-lg border border-gray-300 shadow-sm w-full sm:w-64"
+          className="px-4 py-2 rounded-lg border border-gray-300 shadow-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={search}
           onChange={e => setSearch(e.target.value)}
           aria-label="Search reports"
@@ -165,6 +200,15 @@ function DReports() {
             <option key={type} value={type}>{type}</option>
           ))}
         </select>
+        <select
+            className="px-3 py-2 rounded-lg border border-gray-300 shadow-sm w-full sm:w-auto"
+            value={sortOrder}
+            onChange={e => setSortOrder(e.target.value)}
+            aria-label="Sort by date"
+          >
+            <option value="desc">Newest First</option>
+            <option value="asc">Oldest First</option>
+          </select>
       </div>
 
       {/* Reports List */}
@@ -217,7 +261,7 @@ function DReports() {
                   </button>
                   <button
                     className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition focus:ring-2 focus:ring-green-400"
-                    onClick={e => { e.stopPropagation(); handlePrint(report.file); }}
+                    onClick={e => { e.stopPropagation(); handlePrint(report.file); window.print(); }}
                     aria-label={`Print ${report.type} report`}
                   >
                     <span className="inline-block align-middle mr-1">🖨️</span> Print

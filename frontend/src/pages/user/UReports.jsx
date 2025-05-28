@@ -126,8 +126,7 @@ function UReports() {
   const pageSize = 5;
 
   // --- Filtering, Searching, Sorting ---
-  const filteredReports = reports
-    .filter(r =>
+  const filteredReports = reports.filter(r =>
       (filterType === 'All' || r.type === filterType) &&
       (r.type.toLowerCase().includes(search.toLowerCase()) ||
         r.summary.toLowerCase().includes(search.toLowerCase()) ||
@@ -225,6 +224,7 @@ function UReports() {
     setShowUpload(false);
     setToast({ show: true, msg: 'External report uploaded!', type: 'success' });
   };
+
 
   const handleTagInput = e => {
     const val = e.target.value;
@@ -383,7 +383,7 @@ function UReports() {
                   </button>
                   <button
                     className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition focus:ring-2 focus:ring-green-400"
-                    onClick={e => { e.stopPropagation(); handlePrint(report.file); }}
+                    onClick={e => { e.stopPropagation(); handlePrint(report.file); window.print();}}
                     aria-label={`Print ${report.type} report`}
                   >
                     <span className="inline-block align-middle mr-1">🖨️</span> Print
