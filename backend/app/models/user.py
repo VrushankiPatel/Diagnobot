@@ -1,6 +1,10 @@
-from pydantic import EmailStr, BaseModel
+from pydantic import EmailStr, BaseModel, validator
 from typing import List, Optional
 from app.models.base import MongoModel
+
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -19,3 +23,4 @@ class SymptomCheckRequest(BaseModel):
 
 class DiagnosisResponse(BaseModel):
     suggestions: List[str]
+
