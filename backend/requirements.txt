@@ -8,3 +8,5 @@ pymongo
 python-dotenv
 python-jose
 passlib[bcrypt]
+pydantic[email]
+langchain_community
