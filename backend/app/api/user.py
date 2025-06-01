@@ -21,7 +21,7 @@ def symptom_checker(request: SymptomCheckerRequest, db: Session = Depends(get_db
     Similar issues in past: {request.hadSimilar or None}
     """
 
-    response = await generate_diagnosis(prompt)
+    response = generate_diagnosis(prompt)
 
     record = SymptomCheckRecord(
         symptoms=request.symptomChips,
