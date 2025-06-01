@@ -1,5 +1,6 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, APIRouter
-
+from fastapi.responses import HTMLResponse
+import os
 router = APIRouter()
 from typing import Optional, Dict
 
@@ -7,7 +8,8 @@ app = FastAPI()
 
 @router.get("/")
 async def get():
-    with open("../app/templates/chat.html", "r") as f:
+    file_path = os.path.join(os.path.dirname(__file__), "../templates/chat.html")
+    with open(file_path, "r") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content)
 
