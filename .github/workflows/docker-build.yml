@@ -35,3 +35,8 @@ jobs:
           file: ./docker/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/diagnobot:${{ inputs.WORKSPACE }}
+
+      - name: Pull and run the Docker image
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/diagnobot:${{ inputs.WORKSPACE }}
+          docker run -d -p 8000:8000 -p 5173:5173 ${{ secrets.DOCKER_USERNAME }}/diagnobot:${{ inputs.WORKSPACE }}
