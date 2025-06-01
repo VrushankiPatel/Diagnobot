@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi-Room Chat</title>
+</head>
+<body>
+  <h2>Live Chat Room</h2>
+  <textarea id="chatbox" rows="10" cols="50" readonly></textarea><br>
+  <input type="text" id="message" placeholder="Type your message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    const userType = prompt("Enter your role (doctor/user):").toLowerCase();
+    const roomId = prompt("Enter Room ID (e.g., room123):");
+    const ws = new WebSocket(`ws://localhost:8000/ws/room/${roomId}/${userType}`);
+
+    const chatbox = document.getElementById("chatbox");
+
+    ws.onmessage = function (event) {
+      chatbox.value += "Them: " + event.data + "\n";
+    };
+
+    function sendMessage() {
+      const input = document.getElementById("message");
+      chatbox.value += "You: " + input.value + "\n";
+      ws.send(input.value);
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
