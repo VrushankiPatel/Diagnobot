@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException , Depends
-from app.models.shared import SignupRequest, User,LoginRequest
+from app.models.shared import SignupRequest, User, LoginRequest
 from sqlalchemy.orm import Session
 from app.services.sqlite import get_db
 from passlib.hash import bcrypt
