@@ -1,14 +1,13 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, APIRouter
+from fastapi import WebSocket, WebSocketDisconnect, APIRouter
 from fastapi.responses import HTMLResponse
 import os
-router = APIRouter()
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
-app = FastAPI()
+router = APIRouter()
 
 @router.get("/")
-async def get():
-    file_path = os.path.join(os.path.dirname(__file__), "../templates/chat.html")
+async def get_chat_page():
+    file_path = os.path.join(os.path.dirname(__file__), "templates/chat.html")
     with open(file_path, "r") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content)
@@ -16,49 +15,55 @@ async def get():
 
 class ChatRoom:
     def __init__(self):
-        self.doctor_ws: Optional[WebSocket] = None
         self.user_ws: Optional[WebSocket] = None
+        self.chat_history: List[Dict[str, str]] = []
 
-    async def connect(self, websocket: WebSocket, user_type: str):
+    async def connect(self, websocket: WebSocket):
         await websocket.accept()
-        if user_type == "doctor":
-            self.doctor_ws = websocket
-        elif user_type == "user":
-            self.user_ws = websocket
+        self.user_ws = websocket
 
-    def disconnect(self, websocket: WebSocket):
-        if websocket == self.doctor_ws:
-            self.doctor_ws = None
-        elif websocket == self.user_ws:
-            self.user_ws = None
+    def disconnect(self):
+        self.user_ws = None
 
-    async def relay(self, sender: WebSocket, message: str):
-        target = self.user_ws if sender == self.doctor_ws else self.doctor_ws
-        if target:
-            await target.send_text(message)
+    async def handle_user_message(self, message: str):
+        self.chat_history.append({"role": "user", "content": message})
 
-# room_id -> ChatRoom
+        # Get response from fine-tuned model (replace with actual call)
+        reply = await self.get_llm_response()
+
+        self.chat_history.append({"role": "assistant", "content": reply})
+
+        if self.user_ws:
+            await self.user_ws.send_text(reply)
+
+    async def get_llm_response(self) -> str:
+        # 🔁 Replace this with call to your actual fine-tuned LLM
+        # Example for OpenAI-compatible API:
+        """
+        import openai
+        response = await openai.ChatCompletion.acreate(
+            model="your-fine-tuned-model-id",
+            messages=self.chat_history
+        )
+        return response['choices'][0]['message']['content']
+        """
+        return f"Echoing: {self.chat_history[-1]['content']}"  # Dummy fallback
+
+
 rooms: Dict[str, ChatRoom] = {}
 
-@app.websocket("/ws/room/{room_id}/{user_type}")
-async def websocket_endpoint(websocket: WebSocket, room_id: str, user_type: str):
-    if user_type not in {"doctor", "user"}:
-        await websocket.close(code=4000)
-        return
-
+@router.websocket("/ws/{room_id}")
+async def websocket_chat(websocket: WebSocket, room_id: str):
     if room_id not in rooms:
         rooms[room_id] = ChatRoom()
 
     room = rooms[room_id]
-    await room.connect(websocket, user_type)
+    await room.connect(websocket)
 
     try:
         while True:
             msg = await websocket.receive_text()
-            await room.relay(websocket, msg)
+            await room.handle_user_message(msg)
     except WebSocketDisconnect:
-        room.disconnect(websocket)
-
-        # Optional: cleanup empty rooms
-        if not room.doctor_ws and not room.user_ws:
-            del rooms[room_id]
+        room.disconnect()
+        del rooms[room_id]
