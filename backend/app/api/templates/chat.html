@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><title>Chatbot</title></head>
+<body>
+  <h2>Chat with our AI Doctor</h2>
+  <button onclick="connectChat()">Start Chat</button>
+  <div id="chatBox" style="border:1px solid #ccc; padding:10px; margin:10px;"></div>
+  <input id="msgInput" placeholder="Ask something..." onkeydown="sendMsg(event)" style="width: 300px;">
+
+  <script>
+    let socket;
+
+    function connectChat() {
+      socket = new WebSocket("ws://localhost:8000/chat/ws/user123");
+
+      socket.onmessage = function (event) {
+        const chatBox = document.getElementById("chatBox");
+        chatBox.innerHTML += "<div><b>Bot:</b> " + event.data + "</div>";
+      };
+
+      socket.onopen = function () {
+        document.getElementById("chatBox").innerHTML += "<div><i>Connected to chatbot</i></div>";
+      };
+    }
+
+    function sendMsg(event) {
+      if (event.key === "Enter" && socket && socket.readyState === WebSocket.OPEN) {
+        const input = document.getElementById("msgInput");
+        const msg = input.value;
+        socket.send(msg);
+        document.getElementById("chatBox").innerHTML += "<div><b>You:</b> " + msg + "</div>";
+        input.value = "";
+      }
+    }
+  </script>
+</body>
+</html>
