@@ -13,11 +13,6 @@ const defaultDifferentials = [
   { name: "Allergic Rhinitis", confidence: 0.06 },
 ];
 
-const exampleQuestions = [
-  "Do you also feel nauseous?",
-  "Have you recently traveled?",
-  "Are you taking any medications?",
-];
 
 function UDiagnosis() {
   const [diagnosis, setDiagnosis] = useState(null);
@@ -31,11 +26,7 @@ function UDiagnosis() {
   const [showConditionInfo, setShowConditionInfo] = useState(false);
   const [symptomUpdate, setSymptomUpdate] = useState("");
   const [symptomHistory, setSymptomHistory] = useState([]);
-  const [chatInput, setChatInput] = useState("");
-  const [chatHistory, setChatHistory] = useState([
-    { sender: "ai", text: "You can ask follow-up questions about your diagnosis here." }
-  ]);
-  const [chatLoading, setChatLoading] = useState(false);
+  
   const [userComment, setUserComment] = useState("");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [communityStats] = useState("25% of users with your symptoms reported improvement in 3 days.");
@@ -184,21 +175,6 @@ Recommendations: ${diagnosis.recommendations.join("; ")}
       { date: new Date().toISOString().split("T")[0], status, note: symptomUpdate }
     ]);
     setSymptomUpdate("");
-  };
-
-  // Chat
-  const handleChatSend = () => {
-    if (!chatInput.trim()) return;
-    setChatHistory((prev) => [...prev, { sender: "user", text: chatInput }]);
-    setChatLoading(true);
-    setTimeout(() => {
-      setChatHistory((prev) => [
-        ...prev,
-        { sender: "ai", text: "Thank you for your question. Based on your input, here is some more information..." }
-      ]);
-      setChatLoading(false);
-    }, 1200);
-    setChatInput("");
   };
 
   // Red Flag logic
@@ -599,73 +575,7 @@ Recommendations: ${diagnosis.recommendations.join("; ")}
         Check Another Symptom
       </button>
 
-      {/* Interactive AI Chat */}
-      <div className="mt-10 bg-white rounded-xl shadow p-4 border border-blue-100">
-        <div className="font-semibold text-blue-700 mb-2">Ask the AI for more info or clarification:</div>
-        <div className="mb-2 flex flex-wrap gap-2">
-          {exampleQuestions.map((q, idx) => (
-            <button
-              key={idx}
-              className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold hover:bg-blue-100 transition"
-              onClick={() => setChatInput(q)}
-              type="button"
-            >
-              {q}
-            </button>
-          ))}
-        </div>
-        <div className="bg-blue-50 rounded-lg p-4 text-blue-700 text-sm mb-2 max-h-40 overflow-y-auto">
-         {chatHistory.map((msg, idx) => (
-       <div
-         key={idx}
-         className={`
-           flex mb-2
-           ${msg.sender === "ai" ? "justify-start" : "justify-end"}
-         `}
-       >
-      <div
-        className={`
-          px-3 py-2 rounded-2xl max-w-xs break-words
-          ${msg.sender === "ai"
-            ? "bg-white text-blue-800 border border-blue-100"
-            : "bg-blue-600 text-white"}
-        `}
-        style={{ borderBottomLeftRadius: msg.sender === "ai" ? "0.5rem" : "2rem", borderBottomRightRadius: msg.sender === "ai" ? "2rem" : "0.5rem" }}
-         >
-          <span className="font-semibold">{msg.sender === "ai" ? "AI:" : "You:"} </span>
-         {msg.text}
-        </div>
-      </div>
-     ))}
-      {chatLoading && (
-        <div className="flex justify-start">
-         <div className="px-3 py-2 rounded-2xl bg-white text-blue-400 border border-blue-100 italic">AI is typing…</div>
-       </div>
-      )}
-    </div>
-
-        <div className="flex gap-2">
-          <input
-            type="text"
-            className="flex-1 rounded-xl border border-blue-200 shadow px-4 py-3 text-gray-800 transition mb-2"
-            placeholder="Type your question…"
-            value={chatInput}
-            onChange={e => setChatInput(e.target.value)}
-            disabled={chatLoading}
-            onKeyDown={e => {
-              if (e.key === "Enter") handleChatSend();
-            }}
-          />
-          <button
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold shadow hover:bg-blue-700 transition mb-2"
-            onClick={handleChatSend}
-            disabled={chatLoading}
-          >
-            Send
-          </button>
-        </div>
-      </div>
-
+     
       {/* Edit Form */}
       {editMode && (
         <form onSubmit={handleEditSubmit} className="mb-8 space-y-6 bg-white rounded-xl shadow p-4 border border-blue-100 animate-fade-in absolute left-0 top-0 w-full z-50">

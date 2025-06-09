@@ -18,15 +18,23 @@ const Login = () => {
   const [docLoading, setDocLoading] = useState(false);
   const [docError, setDocError] = useState('');
 
+   // Medical Partner fields
+  const [partnerEmail, setPartnerEmail] = useState('');
+  const [partnerPassword, setPartnerPassword] = useState('');
+  const [partnerShowPwd, setPartnerShowPwd] = useState(false);
+  const [partnerLoading, setPartnerLoading] = useState(false);
+  const [partnerError, setPartnerError] = useState('');
+  
   const navigate = useNavigate();
 
   // Simulate authentication (replace with real API call)
-  const fakeAuth = (isDoctor = false) =>
+  const fakeAuth = (type = 'user') =>
     new Promise((resolve, reject) => {
       setTimeout(() => {
         if (
-          (!isDoctor && email && password ) ||
-          (isDoctor && docEmail && docPassword && license && specialty)
+          (type === 'user' && email && password) ||
+          (type === 'doctor' && docEmail && docPassword && license && specialty) ||
+          (type === 'partner' && partnerEmail && partnerPassword)
         ) {
           resolve();
         } else {
@@ -40,7 +48,7 @@ const Login = () => {
     setError('');
     setLoading(true);
     try {
-      await fakeAuth(false);
+      await fakeAuth('user');
       setLoading(false);
       navigate('/user/dashboard');
     } catch (err) {
@@ -54,12 +62,26 @@ const Login = () => {
     setDocError('');
     setDocLoading(true);
     try {
-      await fakeAuth(true);
+      await fakeAuth('doctor');
       setDocLoading(false);
       navigate('/doctor/dashboard');
     } catch (err) {
       setDocLoading(false);
       setDocError(err.message);
+    }
+  };
+
+  const handlePartnerLogin = async (e) => {
+    e.preventDefault();
+    setPartnerError('');
+    setPartnerLoading(true);
+    try {
+      await fakeAuth('partner');
+      setPartnerLoading(false);
+      navigate('/medical/dashboard');
+    } catch (err) {
+      setPartnerLoading(false);
+      setPartnerError(err.message);
     }
   };
 
@@ -79,6 +101,10 @@ const Login = () => {
           Back to Home
         </button>
         
+         <h2 className="m-0 font-extrabold text-3xl text-blue-700 text-center tracking-wide animate-fade-in-down">
+              Login Page
+            </h2>
+
         {/* Toggle Tabs */}
         <div className="flex justify-center mb-4">
           <button
@@ -90,7 +116,7 @@ const Login = () => {
             onClick={() => setActiveTab('user')}
             type="button"
           >
-            User Login
+            User
           </button>
           <button
             className={`px-4 py-2 rounded-r-lg font-semibold transition-colors duration-200 ${
@@ -101,7 +127,18 @@ const Login = () => {
             onClick={() => setActiveTab('doctor')}
             type="button"
           >
-            Doctor Login
+            Doctor
+          </button>
+           <button
+            className={`px-4 py-2 rounded-r-lg font-semibold transition-colors duration-200 ${
+              activeTab === 'partner'
+                ? 'bg-blue-600 text-white'
+                : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+            }`}
+            onClick={() => setActiveTab('partner')}
+            type="button"
+          >
+            Medical Partner
           </button>
         </div>
 
@@ -283,6 +320,84 @@ const Login = () => {
             </div>
           </form>
         )}
+         {/* Medical Partner Login */}
+        {activeTab === 'partner' && (
+          <form onSubmit={handlePartnerLogin} className="flex flex-col gap-5">
+            <h2 className="m-0 font-extrabold text-2xl text-blue-700 text-center tracking-wide animate-fade-in-down">
+              Medical Partner Login
+            </h2>
+            <p className="text-gray-500 text-center text-sm mb-2 animate-fade-in-down delay-100">
+              Access your dashboard metrics and manage your partnership
+            </p>
+            {partnerError && (
+              <div className="bg-red-50 text-red-700 rounded px-3 py-2 text-sm text-center animate-fade-in">
+                {partnerError}
+              </div>
+            )}
+            <input
+              type="email"
+              placeholder="Partner Email address"
+              value={partnerEmail}
+              onChange={e => setPartnerEmail(e.target.value)}
+              required
+              className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none animate-fade-in delay-150"
+              disabled={partnerLoading}
+            />
+            <div className="relative animate-fade-in delay-200">
+              <input
+                type={partnerShowPwd ? "text" : "password"}
+                placeholder="Password"
+                value={partnerPassword}
+                onChange={e => setPartnerPassword(e.target.value)}
+                required
+                className="p-3 rounded-lg border border-gray-200 text-base focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none w-full pr-10"
+                disabled={partnerLoading}
+                 />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                onClick={() => setPartnerShowPwd((v) => !v)}
+                tabIndex={-1}
+                aria-label={partnerShowPwd ? "Hide password" : "Show password"}
+                disabled={partnerLoading}
+              >
+                {partnerShowPwd ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.336-3.234.938-4.675M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274.857-.676 1.664-1.186 2.393M15.54 15.54A5.978 5.978 0 0112 17c-3.314 0-6-2.686-6-6 0-.879.176-1.716.49-2.47" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            <button
+              type="submit"
+              disabled={partnerLoading}
+              className={`bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg text-base font-semibold py-2.5 cursor-pointer mt-2 shadow-md hover:scale-105 transition-transform duration-200 animate-fade-in delay-300 flex items-center justify-center ${
+                partnerLoading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+            >
+              {partnerLoading ? (
+                  <span className="flex items-center gap-2">
+                  <span className="loader"></span> Signing In...
+                </span>
+              ) : (
+                "Sign In"
+              )}
+            </button>
+            <div className="text-[15px] text-[#666] mt-2 text-center animate-fade-in delay-400">
+              Don't have a partner account?{' '}
+              <Link to="/auth/signup" className="text-blue-700 no-underline font-semibold hover:underline transition-colors">
+                Sign Up
+              </Link>
+            </div>
+          </form>
+        )}
+
       </div>
       {/* Animations & Loader */}
       <style>{`

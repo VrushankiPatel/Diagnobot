@@ -3,42 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 // Dummy user and appointments data for demo
 const userName = "Chocolate Parfait";
-const Appointments = [
-	{
-		time: "9:00 AM",
-    date: "24/6/2025",
-		doctor: "Dr. Jane Doe",
-		type: "General Checkup",
-		location: "City Clinic, Room 12",
-		notes: "Routine annual checkup.",
-	},
-	{
-		time: "11:30 AM",
-    date: "4/7/2025",
-		doctor: "Dr. Alex Kim",
-		type: "Dental Cleaning",
-		location: "Smile Dental, Suite 3",
-		notes: "Teeth cleaning and oral hygiene review.",
-	},
-	{
-		time: "2:30 PM",
-    date: "15/8/2025",
-		doctor: "Dr. John Smith",
-		type: "Consultation",
-		location: "Virtual (Video Call)",
-		notes: "Discuss recent symptoms and review test results.",
-	},
-	{
-		time: "4:00 PM",
-    date: "20/9/2025",
-		doctor: "Dr. Lisa Wong",
-		type: "Eye Exam",
-		location: "Vision Center, Room 5",
-		notes: "Vision test and prescription update.",
-	},
-];
 
-// Expanded health tips
+// health tips
 const healthTips = [
 	"Drink at least 8 glasses of water a day for optimal hydration.",
 	"Take a short walk every hour to keep your body active.",
@@ -95,95 +61,13 @@ const UDashboard = () => {
         </div>
       </div>
 
-      {/* Appointments Preview */}
-      <div className="mb-10 flex flex-col items-center">
-        <div className="w-full max-w-2xl bg-gradient-to-br from-blue-50 via-white to-blue-100 border border-blue-200 rounded-2xl shadow-lg p-6 animate-fade-in delay-400">
-          <div className="flex items-center mb-6">
-            <div className="flex-shrink-0 flex items-center justify-center bg-blue-100 rounded-full w-16 h-16 mr-5 shadow">
-              <svg
-                className="w-9 h-9 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <path d="M16 2v4M8 2v4M3 10h18" />
-              </svg>
-            </div>
-            <div>
-              <div className="font-bold text-2xl text-blue-700 mb-1">Your Upcoming Appointments</div>
-              <div className="text-gray-500 text-sm">Stay on top of your health schedule</div>
-            </div>
-          </div>
-          <div className="space-y-6">
-            {Appointments.length === 0 ? (
-              <div className="text-center text-gray-400 py-8">
-                <svg className="mx-auto mb-2 w-10 h-10 text-blue-200" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M8 12h4l3 3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <div className="font-medium">No upcoming appointments. Book one to get started!</div>
-              </div>
-            ) : (
-   Appointments.map((appt, idx) => (
-  <div
-    key={idx}
-    className={`relative group bg-white rounded-xl p-6 shadow-md border border-blue-100 flex flex-col md:flex-row md:items-center md:justify-between transition hover:shadow-2xl hover:border-blue-400 animate-stagger`}
-    style={{ animationDelay: `${idx * 0.08 + 0.2}s` }}
-  >
-    <div className="flex items-center gap-4">
-      {/* Time & Date */}
-      <div className="hidden md:flex flex-col items-center pr-6 border-r border-blue-50">
-        <div className="text-blue-600 font-bold text-xl">{appt.time}</div>
-        <div className="text-xs text-gray-400">{appt.date}</div>
-      </div>
-      {/* Doctor Avatar */}
-      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center shadow border border-blue-100 mr-3">
-        <span className="text-lg font-bold text-blue-600">{appt.doctor.split(" ")[1]?.[0] || "D"}</span>
-      </div>
-      {/* Details */}
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="font-semibold text-blue-700">{appt.type}</span>
-          {/* Doctor name for desktop */}
-          <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full hidden md:inline">{appt.doctor}</span>
-        </div>
-        {/* Doctor name for mobile, placed under type */}
-        <div className="md:hidden mb-1">
-          <span className="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full">{appt.doctor}</span>
-        </div>
-        <div className="flex items-center gap-2 mb-1">
-          <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path d="M17.657 16.657L13.414 12.414a2 2 0 00-2.828 0l-4.243 4.243" />
-            <path d="M7 7h.01" />
-            <path d="M17 7h.01" />
-            <circle cx="12" cy="12" r="10" />
-          </svg>
-          <span className="text-gray-600 text-sm">{appt.location}</span>
-        </div>
-        <div className="text-gray-500 text-xs italic">{appt.notes}</div>
-      </div>
-    </div>
-    <Link
-      to="/user/appointments"
-      className="absolute top-4 right-4 md:static md:ml-4 mt-3 md:mt-0 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg font-semibold shadow hover:scale-105 hover:bg-blue-700 transition text-center text-sm"
-    >
-      View Details
-    </Link>
-  </div>
-))
-)}
-          </div>
-        </div>
-      </div>
-
+    
       {/* Quick Actions Section */}
       <div className="mb-10">
         <div className="font-bold text-xl text-blue-700 mb-4">Quick Actions</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
-            to="/user/symptom-checker"
+            to="/user/chat"
             className="bg-blue-50 hover:bg-blue-100 rounded-xl shadow p-6 flex flex-col items-center transition hover:scale-105 animate-fade-in delay-500"
           >
             <span className="text-blue-600 mb-2">
@@ -192,9 +76,9 @@ const UDashboard = () => {
                 <circle cx="12" cy="12" r="10" />
               </svg>
             </span>
-            <div className="font-semibold text-lg mb-1">Symptom Checker</div>
+            <div className="font-semibold text-lg mb-1">Chat with Diagnobot</div>
             <div className="text-gray-500 text-sm text-center">
-              Describe your symptoms and get instant AI-powered triage.
+              Get instant answers and health advice from our AI-powered assistant.
             </div>
           </Link>
           <Link
