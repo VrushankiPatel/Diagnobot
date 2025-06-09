@@ -574,6 +574,14 @@ Recommendations: ${diagnosis.recommendations.join("; ")}
       >
         Check Another Symptom
       </button>
+       <button
+        className="mt-6 ml-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-600 shadow-lg transition animate-fade-in-up print:hidden"
+        onClick={() => {
+          navigate("/user/chat");
+        }}
+      >
+        Chat with Diagnobot
+      </button>
 
      
       {/* Edit Form */}
