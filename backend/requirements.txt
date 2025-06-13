@@ -4,7 +4,7 @@ pydantic
 motor
 langchain
 openai
-pymongo
+pymongo>=4.0.0
 python-dotenv
 python-jose
 passlib[bcrypt]

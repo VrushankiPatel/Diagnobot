@@ -14,6 +14,7 @@ import JitsiMeet from './utils/video';
 import UserDashboard from "./pages/user/UDashboard";
 import USymptomChecker from "./pages/user/USymptomChecker";
 import UDiagnosis from "./pages/user/UDiagnosis";
+import UChat from "./pages/user/UChat";
 import UAppointments from "./pages/user/UAppointments";
 import UReports from "./pages/user/UReports";
 import USettings from "./pages/user/USettings";
@@ -25,6 +26,11 @@ import DoctorSchedule from "./pages/doctor/DSchedule";
 import DoctorConsultation from "./pages/doctor/DConsult";
 import DoctorSettings from "./pages/doctor/DSettings";
 import DoctorReports from "./pages/doctor/DReports";
+
+//OTHER MEDICAL PAGES
+import MDashboard from './pages/medical/MDashboard';
+import MAppointment from './pages/medical/MAppointment';
+import MSettings from './pages/medical/MSettings';
 
 import './App.css';
 
@@ -57,6 +63,7 @@ function App() {
           <Route path="/user/dashboard" element={<UserDashboard />} />
           <Route path="/user/symptom-checker" element={<USymptomChecker />} />
           <Route path="/user/diagnosis" element={<UDiagnosis />} />
+          <Route path="/user/chat" element={<UChat />} />
           <Route path="/user/appointments" element={<UAppointments />} />
           <Route path="/user/reports" element={<UReports />} />
           <Route path="/user/settings" element={<USettings />} />
@@ -68,6 +75,11 @@ function App() {
           <Route path="/consult/JitsiMeet" element={<JitsiMeet />} />
           <Route path="/doctor/settings" element={<DoctorSettings />} />
           <Route path="/doctor/reports" element={<DoctorReports />} />
+
+          {/* Other Medical Pages */}
+          <Route path="/medical/dashboard" element={<MDashboard />} />
+          <Route path="/medical/appointments" element={<MAppointment />} />
+          <Route path="/medical/settings" element={<MSettings />} />
 
           {/* Catch-all route for 404 */}
           <Route
