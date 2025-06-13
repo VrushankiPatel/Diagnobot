@@ -840,5 +840,5 @@ Recommendations: ${diagnosis.recommendations.join("; ")}
     </div>
   );
 }
-
+}
 export default UDiagnosis;
