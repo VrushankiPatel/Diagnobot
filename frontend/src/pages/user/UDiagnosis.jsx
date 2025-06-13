@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { getDiagnosis } from "../../utils/api";
 const educationalLinks = [
   { name: "CDC Symptom Checker", url: "https://www.cdc.gov/symptoms" },
   { name: "NHS Health A-Z", url: "https://www.nhs.uk/conditions/" },
@@ -13,12 +13,12 @@ const defaultDifferentials = [
   { name: "Allergic Rhinitis", confidence: 0.06 },
 ];
 
-
 function UDiagnosis() {
   const [diagnosis, setDiagnosis] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [llmResult, setLlmResult] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editError, setEditError] = useState(null);
   const [editForm, setEditForm] = useState(null);
@@ -46,6 +46,9 @@ function UDiagnosis() {
     if (data) {
       const parsed = JSON.parse(data);
       setDiagnosis(parsed);
+      getDiagnosis(parsed.summary.symptomChips.join(", ")).then((res) => {
+        setLlmResult(res); // { response, context }
+      });
       setEditForm({
         symptomChips: parsed.summary.symptomChips || [],
         duration: parsed.summary.duration?.split(" ")[0] || "",
@@ -143,6 +146,8 @@ Had Similar Before: ${diagnosis.summary.hadSimilar ? "Yes" : "No"}
 
 Diagnosis: ${diagnosis.probable}
 Advice: ${diagnosis.advice}
+AI Model's Suggestion:
+${llmResult?.response || "No additional advice from AI."}
 Recommendations: ${diagnosis.recommendations.join("; ")}
     `;
     const blob = new Blob([text], { type: "text/plain" });
@@ -168,14 +173,15 @@ Recommendations: ${diagnosis.recommendations.join("; ")}
   };
 
   // Symptom Tracker
-  const handleSymptomUpdate = (status) => {
-    if (!symptomUpdate) return;
-    setSymptomHistory((prev) => [
+  const handleSymptomUpdate = async () => {
+    if (!symptomUpdate.trim()) return;
+    // Update the symptom history as before
+    setSymptomHistory(prev => [
       ...prev,
-      { date: new Date().toISOString().split("T")[0], status, note: symptomUpdate }
+      { date: new Date().toISOString().split("T")[0], note: symptomUpdate }
     ]);
     setSymptomUpdate("");
-  };
+
 
   // Red Flag logic
   const isRedFlag = (
@@ -204,6 +210,22 @@ Recommendations: ${diagnosis.recommendations.join("; ")}
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
         </svg>
         <div className="font-semibold text-lg">Loading diagnosis...</div>
+        {llmResult && (
+        <div className="mb-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-xl p-4 shadow animate-fade-in">
+          <div className="font-semibold text-yellow-700 mb-1">
+            AI Model's Diagnosis Suggestion:
+          </div>
+          <div className="text-yellow-900 mb-2 whitespace-pre-line">
+            {llmResult.response}
+          </div>
+          {llmResult.context && (
+            <details>
+              <summary className="cursor-pointer text-xs text-yellow-600 underline">Show knowledge base used</summary>
+              <pre className="text-xs text-yellow-800 bg-yellow-100 rounded p-2 mt-2">{llmResult.context}</pre>
+            </details>
+          )}
+        </div>
+      )}
       </div>
     );
   }
@@ -373,6 +395,27 @@ Recommendations: ${diagnosis.recommendations.join("; ")}
           ))}
         </ul>
       </div>
+      {llmResult && (
+      <div className="mb-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-xl p-4 shadow animate-fade-in">
+        <div className="font-semibold text-yellow-700 mb-1">
+          AI Model's Diagnosis Suggestion:
+        </div>
+        <div className="text-yellow-900 mb-2 whitespace-pre-line">
+          {llmResult.response}
+        </div>
+        {llmResult.context && (
+          <details>
+            <summary className="cursor-pointer text-xs text-yellow-600 underline">Show knowledge base used</summary>
+            <pre
+              className="text-xs text-yellow-800 bg-yellow-100 rounded p-2 mt-2"
+              style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowX: "auto" }}
+            >
+              {llmResult.context}
+            </pre>
+          </details>
+        )}
+      </div>
+    )}
 
       {/* Symptom Tracker */}
       <div className="mb-4 bg-white rounded-xl shadow p-4 border border-blue-100">
