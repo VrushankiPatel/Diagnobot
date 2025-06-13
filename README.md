@@ -93,7 +93,6 @@ GCP Hosting + Whisper API
 ### 💻 Frontend
 
 * **React.js + TailwindCSS**
-* Chat/Video room (WebRTC or Firebase)
 * User-friendly dashboards
 
 ### 📁 Database
@@ -137,47 +136,11 @@ GCP Hosting + Whisper API
 
 ---
 
-## 🔍 Pages Overview
-
-### General
-
-* `/`: Landing page
-* `/auth`: Login/Signup
-* `/verify-email`: Verification
-
-### User
-
-* `/user/dashboard`: Main dashboard
-* `/user/symptom-checker`: Form with voice/text
-* `/user/diagnosis`: AI suggestions
-* `/user/appointments`: View & manage
-* `/user/reports`: Downloadable health reports
-* `/user/payments`: Transactions & billing
-* `/user/settings`: Profile config
-
-### Doctor
-
-* `/doctor/dashboard`: Overview
-* `/doctor/schedule`: Manage availability
-* `/doctor/consultation`: Consultation interface
-* `/doctor/reports`: Patient reports
-* `/doctor/settings`: Profile config
-
-### Shared
-
-* `/consult/:sessionId`: Live chat/video room
-
-### Admin
-
-* `/admin/dashboard`: Doctor approvals, analytics
-
----
-
 ## 📊 Judging Criteria Mapping
 
 | Criteria             | Implementation                                         |
 | -------------------- | ------------------------------------------------------ |
-| **Software Quality** | GCP Hosting + GitLab CI + MongoDB Atlas + FastAPI      |
+| **Software Quality** | GCP Hosting  + MongoDB Atlas + FastAPI                 |
 | **UI/UX**            | Fully responsive, modern dashboards using TailwindCSS  |
 | **Developer Impact** | Open-source RAG pipeline + Templates + Documentation   |
 | **Creativity**       | AI triage logic, live doctor routing, phone bot vision |
@@ -186,10 +149,13 @@ GCP Hosting + Whisper API
 
 ## 🎨 Future Plans
 
-* Add Phone Call AI Bot (Twilio or similar)
-* More language support
-* Multi-specialty dataset enhancement
-* AI-powered doctor assistant mode
+* **Level 1 Emergency Routing**: Future plans to escalate emergencies to EMS services
+* **Phone Bot Integration**: Add AI voice assistant to handle inbound calls
+* **Doctor Recommendation Engine**: Match patients to doctors based on symptoms, specialty, and availability
+* **Health Insights**: Track user trends and suggest preventive care
+* **HIPAA Compliance & Security**: Strengthen data protection for real deployments
+* **Clinical Trials / NGO Partnerships**: Validate and pilot in rural or under-resourced areas
+* **Payment System Integeration**: Integerate secure appointment payments and history tracking (Stripe for payments)
 
 ---
 
@@ -197,10 +163,10 @@ GCP Hosting + Whisper API
 
 | Name          | Role               | Skills                                | Responsibilities                                                                                                                            |
 | ------------- | ------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Joanna**    | ML + Data Engineer | Python, LangChain, RAG, MongoDB       | - Develop AI triage logic<br>- Build and fine-tune RAG pipeline<br>- Configure vector DB with medical datasets<br>- Whisper API integration |
-| **Ewa**       | Frontend Engineer  | React.js, TailwindCSS, Design Systems | - Build user-friendly dashboards<br>- Implement chat/video UI<br>- Connect frontend to APIs<br>- Design responsive UX                       |
-| **Vrushanki** | Backend Engineer 1 | Python, RAG, MongoDB                  | - Develop RESTful APIs with FastAPI<br>- Handle file uploads, chat backend<br>- Implement authentication and routing                        |
-| **Akanksh**   | Backend Engineer 2 | RAG, MongoDB                          | - Set up Google Cloud infra<br>- Configure database and deployment<br>- Build admin logic and support scheduling/payment                    |
+| **Joanna**    | ML + Data Engineer | Python, LangChain, RAG, MongoDB       | - Develop AI triage logic<br>- Build and fine-tune RAG pipeline<br>- Handle AI chat integerations for symptom diagnosis <br>- Handle file uploads and exports |
+| **Ewa**       | Frontend Engineer  | React.js, TailwindCSS, Design Systems | - Build user-friendly dashboards<br>- Implement chat/video UI<br>- Helped connect frontend to APIs<br>- Design responsive UX                       |
+| **Vrushanki** | Backend Engineer 1 | Python, RAG, MongoDB                  | - Develop RESTful APIs with FastAPI<br>- Whisper API integration<br>- Implement authentication and routing                        |
+| **Akanksh**   | Backend Engineer 2 | RAG, MongoDB                          | - Set up Google Cloud infra<br>- Configure database and deployment<br>- Configure vector DB with medical datasets                    |
 
 
 > **Built for the AI in Action Hackathon 2025**
@@ -209,6 +175,7 @@ GCP Hosting + Whisper API
 
 ## 📚 References & Datasets
 
+* [LLM Chat Dataset](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT/viewer/en/train?views%5B%5D=en&row=46)
 * [https://github.com/ahmadvh/AI-Agents-for-Medical-Diagnostics](https://github.com/ahmadvh/AI-Agents-for-Medical-Diagnostics)
 * [https://github.com/TAMustafa/Local\_Chat\_RAG](https://github.com/TAMustafa/Local_Chat_RAG)
 * [https://www.kaggle.com/datasets/thedevastator/comprehensive-medical-q-a-dataset](https://www.kaggle.com/datasets/thedevastator/comprehensive-medical-q-a-dataset)
