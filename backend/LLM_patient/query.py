@@ -3,7 +3,27 @@ import openai
 import os
 import pymongo
 from dotenv import load_dotenv
+from google import genai
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+
+# Allow frontend to call backend (CORS)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or restrict to your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.post("/api/diagnosis")
+async def diagnosis(request: Request):
+    data = await request.json()
+    query = data.get("query")
+    response, context = handle_user_query(query, collection)
+    return {"response": response, "context": context}
 # Load environment variables
 load_dotenv()
 
@@ -11,8 +31,8 @@ load_dotenv()
 model = SentenceTransformer('all-MiniLM-L6-v2')  # 384-dim embeddings
 
 # Load OpenAI API Key
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+client = genai.Client(api_key=GOOGLE_API_KEY)
 # Connect to MongoDB
 mongo_uri = os.getenv("MONGO_URI")
 if not mongo_uri:
@@ -66,32 +86,35 @@ def vector_search(user_query, collection):
     except Exception as e:
         print(f"Vector search error: {e}")
         return []
-
 def handle_user_query(query, collection):
-    get_knowledge = vector_search(query, collection)
-
-    if not get_knowledge:
+    knowledge = vector_search(query, collection)
+    if not knowledge:
         return "No relevant context found.", ""
-
-    search_result = ''
-    for result in get_knowledge:
-        search_result += f"Reason: {result.get('Complex_CoT', 'N/A')}, Response: {result.get('Response', 'N/A')}\n"
+    
+    context = "\n".join(
+        f"Reason: {r.get('Complex_CoT', 'N/A')}, Response: {r.get('Response', 'N/A')}"
+        for r in knowledge
+    )
 
     try:
-        completion = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a system that provides potential disease diagnoses."},
-                {"role": "user", "content": f"Answer this user query: {query} with the following context:\n{search_result}"}
-            ]
+        response = client.models.generate_content(
+            model = "gemini-1.5-flash",
+            contents=f"You are a system that provides potential disease diagnoses. "
+            "Use the following knowledge as background information ONLY to support your answer. "
+            "Based on the user's symptoms and the knowledge base, always suggest at least one possible disease or condition, even if you are uncertain."
+            "Do NOT analyze or summarize the knowledge itself. "
+            "Focus on answering the user's query directly and accurately. "
+            "If the knowledge is relevant, use it to support your answer, but do not repeat or explain it. "
+            f"User query: {query}\n"
+            f"Knowledge base:\n{context}"
         )
-        return completion.choices[0].message.content, search_result
+        return response.text, context
     except Exception as e:
-        return f"OpenAI API error: {e}", search_result
+        return f"Gemini API error: {e}", context
 
-# Sample query
-query = "What can I do for a persistent cough and fever, fatigue, and muscle pain for 3 days?"
-response, source_information = handle_user_query(query, collection)
+# Test it
+#query = "What can I do for a persistent cough and fever, fatigue, and muscle pain for 3 days?"
+#response, source_information = handle_user_query(query, collection)
 
-print(f"Response: {response}")
-print(f"Source Information:\n{source_information}")
+#print(f"Response: {response}")
+#print(f"Source Information:\n{source_information}")

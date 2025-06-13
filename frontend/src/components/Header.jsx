@@ -14,7 +14,7 @@ const userLinks = [
 const doctorLinks = [
   { to: "/doctor/dashboard", label: "Dashboard" },
   { to: "/doctor/schedule", label: "Schedule" },
-  { to: "/doctor/consultation", label: "Consultation" },
+  { to: "/consult/JitsiMeet", label: "Consultation" },
   { to: "/doctor/reports", label: "Reports" },
   { to: "/doctor/settings", label: "Settings" },
 ];
@@ -34,8 +34,8 @@ const Header = () => {
   const links = userType === "doctor" ? doctorLinks : userLinks;
 
   const handleVideoCall = () => {
-    const sessionId = Math.random().toString(36).substring(2, 10);
-    navigate(`/consult/${sessionId}`);
+    //const sessionId = Math.random().toString(36).substring(2, 10);
+    navigate('/consult/JitsiMeet');
     setMenuOpen(false);
   };
 

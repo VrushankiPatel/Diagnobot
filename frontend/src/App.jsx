@@ -9,7 +9,7 @@ import SignIn from "./pages/auth/SignIn";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Privacy from "./pages/PrivacyPolicy";
 import Terms from "./pages/TOS";
-
+import JitsiMeet from './utils/video';
 //USER PAGES
 import UserDashboard from "./pages/user/UDashboard";
 import USymptomChecker from "./pages/user/USymptomChecker";
@@ -65,7 +65,7 @@ function App() {
           {/* Doctor Routes */}
           <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
           <Route path="/doctor/schedule" element={<DoctorSchedule />} />
-          <Route path="/doctor/consultation" element={<DoctorConsultation />} />
+          <Route path="/consult/JitsiMeet" element={<JitsiMeet />} />
           <Route path="/doctor/settings" element={<DoctorSettings />} />
           <Route path="/doctor/reports" element={<DoctorReports />} />
 

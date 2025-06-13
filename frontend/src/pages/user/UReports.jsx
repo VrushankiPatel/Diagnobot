@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-
+import { PDFDocument, StandardFonts } from 'pdf-lib';
 // --- Mock Data ---
 const mockReports = [
   {
@@ -8,6 +8,7 @@ const mockReports = [
     type: 'General Checkup',
     summary: 'No major issues. Blood pressure and cholesterol normal.',
     file: 'checkup-2025-05-20.pdf',
+    fileUrl: '/files/checkup-2025-05-20.txt',
     doctor: 'Dr. Smith',
     doctorComment: 'Patient is healthy. Continue current lifestyle.',
     notes: '',
@@ -23,6 +24,7 @@ const mockReports = [
     type: 'Blood Test',
     summary: 'Slightly elevated glucose. Advised to monitor diet.',
     file: 'bloodtest-2025-04-10.pdf',
+    fileUrl: '/files/bloodtest-2025-04-10.pdf',
     doctor: 'Dr. Lee',
     doctorComment: 'Monitor glucose, retest in 3 months.',
     notes: '',
@@ -121,6 +123,10 @@ function UReports() {
   const [uploadDate, setUploadDate] = useState('');
   const [shareModal, setShareModal] = useState(null);
   const [qrUrl, setQrUrl] = useState('');
+  const [analyzingReport, setAnalyzingReport] = useState(null); 
+  const [analysisResult, setAnalysisResult] = useState("");
+  const [analyzingId, setAnalyzingId] = useState(null);
+  const [loadingAnalysis, setLoadingAnalysis] = useState(false);
   const fileInputRef = useRef(null);
 
   const pageSize = 5;
@@ -138,14 +144,83 @@ function UReports() {
         ? new Date(b.date) - new Date(a.date)
         : new Date(a.date) - new Date(b.date)
     );
-
+  const downloadLinkRef = useRef(null);
   const paginatedReports = filteredReports.slice(0, page * pageSize);
-
-  // --- Handlers ---
-  const handleDownload = (file) => {
-    setToast({ show: true, msg: `Downloading ${file}...`, type: 'success' });
-    // Real download logic here
+  const handleDownload = () => {
+    const blob = new Blob([analysisResult], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    downloadLinkRef.current.href = url;
+    downloadLinkRef.current.download = "AI-Analysis.txt";
+    // Optionally, revoke the object URL after download
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
+async function handleDownload1(uploadFile, notes) {
+    if (!uploadFile) {
+      alert('Please upload a file.');
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = async (event) => {
+      const fileContent = event.target.result;
+
+      if (uploadFile.name.toLowerCase().endsWith('.txt')) {
+        // Combine file content with notes
+        const textContent = new TextDecoder().decode(fileContent);
+        const combinedContent = `${textContent}\n\nNotes:\n${notes || 'No notes added.'}`;
+
+        // Create a Blob for the combined content
+        const blob = new Blob([combinedContent], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        // Trigger download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${uploadFile.name.split('.')[0]}-with-notes.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } else if (uploadFile.name.toLowerCase().endsWith('.pdf')) {
+        // Handle PDF files using pdf-lib
+        const pdfDoc = await PDFDocument.load(fileContent);
+        const page = pdfDoc.addPage();
+        const { width, height } = page.getSize();
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontSize = 12;
+
+        page.drawText(`Notes:\n${notes || 'No notes added.'}`, {
+          x: 50,
+          y: height - 50,
+          size: fontSize,
+          font: font,
+        });
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+
+        // Trigger download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${uploadFile.name.split('.')[0]}-with-notes.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        alert('Unsupported file format. Only .txt and .pdf files are supported.');
+      }
+    };
+
+    reader.onerror = () => {
+      console.error('Error reading file:', reader.error);
+      alert('Error reading file.');
+    };
+
+    if (uploadFile.name.toLowerCase().endsWith('.txt') || uploadFile.name.toLowerCase().endsWith('.pdf')) {
+      reader.readAsArrayBuffer(uploadFile);
+    } else {
+      alert('Unsupported file format. Only .txt and .pdf files are supported.');
+    }
+  }
 
   const handleShare = (report) => {
     setShareModal(report);
@@ -168,10 +243,21 @@ function UReports() {
     // Real print logic here
   };
 
-  const handleExport = (type) => {
-    setToast({ show: true, msg: `Exporting ${type} as PDF...`, type: 'success' });
-    // Real export logic here
-  };
+ const handleExportSymptoms = (symptoms) => {
+  const fileContent = symptoms
+    .map(
+      (symptom) =>
+        `${symptom.date}\nSymptoms: ${symptom.symptoms}\nDiagnosis: ${symptom.diagnosis}\n`
+    )
+    .join('\n');
+  const blob = new Blob([fileContent], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'symptom-history.txt';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   const handleAddNote = (id, type) => {
     if (type === 'report') {
@@ -223,9 +309,39 @@ function UReports() {
     setReports([newReport, ...reports]);
     setShowUpload(false);
     setToast({ show: true, msg: 'External report uploaded!', type: 'success' });
+    setTimeout(() => {
+    setToast({ show: false, msg: '', type: '', fade: false });
+  }, 5000); 
   };
+  const handleAnalyzeReport = async (report) => {
+    console.log('Analyze button clicked!', report);
+    setAnalysisResult("");
+    setAnalyzingId(report.id);
+    setLoadingAnalysis(true);
+    setAnalyzingReport(report); // ADD THIS
+    try {
+      // If you have the file as a Blob/File object, use it directly.
+      // If you only have the file URL, fetch it first:
+      const response = await fetch(report.fileUrl);
+      const fileBlob = await response.blob();
 
+      const formData = new FormData();
+      
+      formData.append("file", uploadFile, uploadFile.name);
 
+      const res = await fetch("http://localhost:8000/api/analyze-report", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      setAnalysisResult(data.analysis);
+    } catch (err) {
+      setAnalysisResult("Error analyzing report.");
+    }
+    setLoadingAnalysis(false);
+    setAnalyzingId(null);
+  };
+  
   const handleTagInput = e => {
     const val = e.target.value;
     if (val && !uploadTags.includes(val)) {
@@ -255,13 +371,11 @@ function UReports() {
       {/* Toast Notification */}
       {toast.show && (
         <div
-          className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-xl shadow-lg font-semibold animate-fade-in-up
-            ${toast.type === "success" ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-xl shadow-lg font-semibold bg-gray-300 text-white"
           role="alert"
           aria-live="polite"
         >
           {toast.msg}
-          <button className="ml-4 text-white/70 hover:text-white" onClick={closeToast} aria-label="Close notification">×</button>
         </div>
       )}
 
@@ -305,13 +419,13 @@ function UReports() {
             <option value="desc">Newest First</option>
             <option value="asc">Oldest First</option>
           </select>
-          <button
+          {/* <button
             className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold shadow hover:bg-green-700 transition w-full sm:w-auto"
             onClick={() => handleExport('reports')}
             aria-label="Export all reports"
           >
             Export PDF
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -376,14 +490,17 @@ function UReports() {
                 <div className="flex gap-2 mt-2 md:mt-0 flex-wrap">
                   <button
                     className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition focus:ring-2 focus:ring-blue-400"
-                    onClick={e => { e.stopPropagation(); handleDownload(report.file); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDownload1(uploadFile,notesDraft);
+                    }}
                     aria-label={`Download ${report.type} report`}
                   >
                     <span className="inline-block align-middle mr-1">⬇️</span> Download
                   </button>
                   <button
                     className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition focus:ring-2 focus:ring-green-400"
-                    onClick={e => { e.stopPropagation(); handlePrint(report.file); window.print();}}
+                    onClick={e => { e.stopPropagation(); handlePrint(report.file); window.print(); }}
                     aria-label={`Print ${report.type} report`}
                   >
                     <span className="inline-block align-middle mr-1">🖨️</span> Print
@@ -395,6 +512,19 @@ function UReports() {
                   >
                     <span className="inline-block align-middle mr-1">🔗</span> Share
                   </button>
+                  {!report.private && (
+                  <button
+                    className="px-3 py-1 bg-yellow-500 text-black rounded hover:bg-yellow-600 transition focus:ring-2 focus:ring-yellow-400 flex items-center gap-1"
+                    onClick={(e) => { e.stopPropagation(); handleAnalyzeReport(report); }}
+                    disabled={analyzingId === report.id}
+                    aria-label={`Analyze ${report.type} report`}
+                  >
+                    <span role="img" aria-label="Analyze" className="inline-block align-middle">
+                      🔍
+                    </span>
+                    {analyzingId === report.id ? "Analyzing…" : "Analyze"}
+                  </button>
+                )}
                 </div>
               </li>
             ))}
@@ -428,7 +558,7 @@ function UReports() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".pdf,image/*"
+                accept=".pdf,.txt,image/*"
                 onChange={handleFileChange}
                 className="block w-full text-sm text-gray-700"
                 required
@@ -609,7 +739,7 @@ function UReports() {
               </button>
             </div>
             <div className="flex gap-2 mt-4 flex-wrap">
-              <button
+              {/* <button
                 className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
                 onClick={() => handleDownload(modalReport.file)}
               >
@@ -626,7 +756,7 @@ function UReports() {
                 onClick={() => handleShare(modalReport)}
               >
                 Share
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -674,11 +804,11 @@ function UReports() {
             <span role="img" aria-label="history">🩺</span> Symptom History & Previous Diagnoses
           </h3>
           <button
-            className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold shadow hover:bg-green-700 transition"
-            onClick={() => handleExport('symptoms')}
+            className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition focus:ring-2 focus:ring-green-400"
+            onClick={() => handleExportSymptoms(symptoms)}
             aria-label="Export symptom history"
           >
-            Export PDF
+            Export Symptoms
           </button>
         </div>
         {symptoms.length === 0 ? (
@@ -721,6 +851,40 @@ function UReports() {
           </ul>
         )}
       </div>
+      {analyzingReport && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 animate-fade-in">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
+              onClick={() => setAnalyzingReport(null)}
+            >✕</button>
+            <div className="font-bold text-lg mb-2">AI Report Analysis</div>
+            <div className="mb-2">
+              <b>File:</b>{" "}
+              <span className="text-blue-600 underline">
+                {analyzingReport.file?.name || analyzingReport.file}
+              </span>
+            </div>
+            <div className="mb-2">
+              <b>AI Analyze Result:</b>
+              <div className="bg-gray-100 rounded p-2 mt-1 min-h-[40px]">
+                {loadingAnalysis
+                  ? "Analyzing…"
+                  : analysisResult || "No result yet."}
+              </div>
+            </div>
+            <a ref={downloadLinkRef} style={{ textDecoration: "none" }}>
+              <button
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded flex items-center gap-2"
+                onClick={handleDownload}
+                disabled={!analysisResult}
+              >
+                <span role="img" aria-label="Download">⬇️</span> Download
+              </button>
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Symptom Modal */}
       {modalSymptom && (
