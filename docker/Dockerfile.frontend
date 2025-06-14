@@ -1,0 +1,20 @@
+# Use Node.js base image to build frontend
+FROM node:20 AS builder
+
+WORKDIR /app
+COPY frontend/ ./
+RUN npm install && npm run build
+
+# Use nginx to serve the static frontend
+FROM nginx:stable-alpine
+
+# Remove default nginx index and add built frontend
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expose frontend port (Cloud Run defaults to 8080)
+EXPOSE 5173
+
+cd /app/frontend
+
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
