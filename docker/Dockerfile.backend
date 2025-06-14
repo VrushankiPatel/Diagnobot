@@ -18,7 +18,7 @@ COPY backend/ .
 # Expose backend port
 EXPOSE 8000
 
-cd /app/backend
+RUN cd /app/backend
 
 # Run FastAPI app
 CMD ["python3", "-m", "app.__init__"]
