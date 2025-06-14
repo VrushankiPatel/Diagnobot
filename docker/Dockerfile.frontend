@@ -15,6 +15,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Expose frontend port (Cloud Run defaults to 8080)
 EXPOSE 5173
 
-cd /app/frontend
+RUN cd /app/frontend
 
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
