@@ -62,5 +62,5 @@ async def analyze_report(file: UploadFile = File(...)):
     logging.debug("Model responded.")
     return {"analysis": response.text}
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=8000)

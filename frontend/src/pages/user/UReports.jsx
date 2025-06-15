@@ -329,7 +329,7 @@ async function handleDownload1(uploadFile, notes) {
       
       formData.append("file", uploadFile, uploadFile.name);
 
-      const res = await fetch("http://localhost:8000/api/analyze-report", {
+      const res = await fetch("https://diagnobot-backend-653741639089.us-west1.run.app/api/analyze-report", {
         method: "POST",
         body: formData,
       });
