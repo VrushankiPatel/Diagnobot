@@ -2,7 +2,7 @@
 FROM python:3.10-slim
 
 # Set work directory
-WORKDIR /app
+WORKDIR /diagnobot_app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y build-essential && \
@@ -13,12 +13,14 @@ COPY backend/requirements.txt ./requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend app
+# Copy backend diagnobot_app
 COPY backend/ ./backend/
 
 # Expose backend port
-EXPOSE 8000
+#EXPOSE 8000
 
-# Run FastAPI app
-WORKDIR /app/backend
+ENV PYTHONPATH="/diagnobot_app/backend"
+
+# Run FastAPI diagnobot_app
+WORKDIR /diagnobot_app/backend
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
