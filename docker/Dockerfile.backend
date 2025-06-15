@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y build-essential && \
 
 # Copy and install Python dependencies
 COPY backend/requirements.txt ./requirements.txt
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend app
-COPY backend/ .
+COPY backend/ ./backend/
 
 # Expose backend port
 EXPOSE 8000
