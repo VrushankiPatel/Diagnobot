@@ -5,8 +5,15 @@ FROM python:3.10-slim
 WORKDIR /diagnobot_app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y build-essential && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libgmp-dev \
+    libgeos-dev \
+    libffi-dev \
+    libjpeg-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy and install Python dependencies
 COPY backend/requirements.txt ./requirements.txt
