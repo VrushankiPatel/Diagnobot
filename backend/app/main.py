@@ -21,7 +21,7 @@ import uvicorn
 import os
 
 # For PDF extraction
-import PyPDF2
+# import PyPDF2
 
 # Project configuration
 PROJECT_ID = "1066114559013"
@@ -43,12 +43,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def extract_text_from_pdf(file):
-    reader = PyPDF2.PdfReader(file)
-    text = ""
-    for page in reader.pages:
-        text += page.extract_text() or ""
-    return text
+# def extract_text_from_pdf(file):
+#     reader = PyPDF2.PdfReader(file)
+#     text = ""
+#     for page in reader.pages:
+#         text += page.extract_text() or ""
+#     return text
 
 import logging
 
