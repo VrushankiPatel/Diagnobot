@@ -14,3 +14,4 @@ langchain_community
 google-generativeai
 google-cloud-aiplatform
 datasets
+PyPDF2
