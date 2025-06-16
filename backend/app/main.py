@@ -1,5 +1,6 @@
 # backend/app/main.py
 from fastapi import FastAPI
+from api import auth
 from api.auth import router as auth_router
 from api.user import router as user_router
 from api.doctor import router as doctor_router
