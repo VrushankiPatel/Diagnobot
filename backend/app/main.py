@@ -69,6 +69,7 @@ async def analyze_report(file: UploadFile = File(...)):
         logging.error("Unsupported file.")
         return {"error": "Unsupported file type. Please upload a .txt or .pdf file."}
 
+
     logging.debug("Generating content with tuned model.")
     tuned_model = GenerativeModel(sft_tuning_job.tuned_model_endpoint_name)
     response = tuned_model.generate_content(content)
