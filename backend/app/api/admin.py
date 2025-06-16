@@ -11,7 +11,7 @@ async def admin_dashboard():
 
 # TODO: finalize above or below
 # if using dependencies.py then change the route as below
-from app.api.dependencies import get_current_user
+from api.dependencies import get_current_user
 from fastapi import Depends
 
 @router.get("/dashboard")

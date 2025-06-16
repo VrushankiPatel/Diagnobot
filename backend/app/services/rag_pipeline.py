@@ -1,6 +1,6 @@
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
-from app.services.mongodb import get_vectorstore
+from services.mongodb import get_vectorstore
 
 def generate_diagnosis(query: str):
     vectorstore = get_vectorstore()

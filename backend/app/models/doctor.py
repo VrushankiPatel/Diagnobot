@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from app.models.base import MongoModel
+from models.base import MongoModel
 from datetime import datetime
 
 

@@ -1,15 +1,20 @@
 # backend/app/main.py
 from fastapi import FastAPI
-from app.api import auth, user, doctor, shared, admin, chatroom
+from api.auth import router as auth_router
+from api.user import router as user_router
+from api.doctor import router as doctor_router
+from api.shared import router as shared_router
+from api.admin import router as admin_router
+from api.chatroom import router as chatroom_router
 
 app = FastAPI()
 
-app.include_router(auth.router, prefix="/auth")
-app.include_router(user.router, prefix="/user")
-app.include_router(doctor.router, prefix="/doctor")
-app.include_router(shared.router, prefix="/consult")
-app.include_router(admin.router, prefix="/admin")
-app.include_router(chatroom.router, prefix="/chat")
+app.include_router(auth_router, prefix="/auth")
+app.include_router(user_router, prefix="/user")
+app.include_router(doctor_router, prefix="/doctor")
+app.include_router(shared_router, prefix="/consult")
+app.include_router(admin_router, prefix="/admin")
+app.include_router(chatroom_router, prefix="/chat")
 
 ########################################
 from vertexai.generative_models import GenerativeModel

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.models.doctor import Appointment
+from models.doctor import Appointment
 from sqlalchemy.orm import Session
-from app.services.sqlite import get_db
+from services.sqlite import get_db
 from typing import List
 
 router = APIRouter()

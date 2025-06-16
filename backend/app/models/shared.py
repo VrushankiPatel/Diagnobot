@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from app.models.base import MongoModel
+from models.base import MongoModel
 from sqlalchemy import Column, String, Integer
 from pydantic import EmailStr, BaseModel, validator
 from sqlalchemy.ext.declarative import declarative_base

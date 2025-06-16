@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException , Depends
-from app.models.shared import SignupRequest, User, LoginRequest
+from models.shared import SignupRequest, User, LoginRequest
 from sqlalchemy.orm import Session
-from app.services.sqlite import get_db
+from services.sqlite import get_db
 from passlib.hash import bcrypt
-from app.api.helper import verify_password,create_access_token
+from api.helper import verify_password,create_access_token
 
 router = APIRouter()
 

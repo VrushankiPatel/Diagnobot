@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.symptom_checker import SymptomCheckerRequest
-from app.models.user import SymptomCheckRecord, DiagnosisResponse
-from app.services.rag_pipeline import generate_diagnosis
-from app.services.sqlite import get_db
+from schemas.symptom_checker import SymptomCheckerRequest
+from models.user import SymptomCheckRecord, DiagnosisResponse
+from services.rag_pipeline import generate_diagnosis
+from services.sqlite import get_db
 
 router = APIRouter()
 
