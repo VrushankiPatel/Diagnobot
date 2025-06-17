@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from google import genai
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-import app.main import app
+import main import app
 
 # Allow frontend to call backend (CORS)
 app.add_middleware(
