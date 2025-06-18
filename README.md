@@ -12,6 +12,8 @@ Healthcare systems are frequently overwhelmed, especially during emergencies or 
 * Delayed attention for urgent cases
 * Manual bottlenecks in appointment management and diagnosis
 
+### Project Demo: https://screenrec.com/share/waJq8y6NTM
+
 ### We asked ourselves:
 
 > "What if AI could assist in determining patient urgency, suggest first-line care, and help route them to the right doctor immediately?"
